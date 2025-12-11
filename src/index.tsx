@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { serveStatic } from 'hono/cloudflare-workers'
-import { mainPageHTML } from './main-page'
+import { getMainPageHTML } from './pages'
 
 type Bindings = {
   DB: D1Database;
@@ -273,5 +273,8 @@ app.get('/api/products/deals/best', async (c) => {
 })
 
 // ==================== 메인 페이지 ====================
-app.get("/", (c) => c.html(mainPageHTML))
+app.get('/', (c) => {
+  return c.html(getMainPageHTML())
+})
+
 export default app
