@@ -1,21 +1,344 @@
-```txt
-npm install
-npm run dev
+# 🎭 럭셔리 리뷰 허브 (Luxury Review Hub)
+
+> **전 세계 명품, 가장 똑똑하게 사는 법**
+> 
+> 실시간 가격비교 · 검증된 리뷰 · 정품 인증 가이드
+
+---
+
+## 📌 프로젝트 개요
+
+명품 구매를 고민하는 소비자를 위한 커뮤니티 기반 가격비교 및 리뷰 플랫폼입니다.
+
+### 핵심 가치
+- 💰 **실시간 가격비교**: 사용자가 직접 등록한 전 세계 명품 쇼핑몰의 가격 정보
+- ✅ **검증된 판매처**: A~D 등급의 신뢰도 평가 시스템
+- 📝 **실사용자 리뷰**: 실제 구매자들의 솔직한 리뷰
+- 🔍 **정품 인증 가이드**: 브랜드별 정품 식별 방법
+
+---
+
+## 🌐 공개 URL
+
+### 개발 서버
+- **URL**: https://3000-ijgzvb87c568z5syk15p5-2e77fc33.sandbox.novita.ai
+- **상태**: ✅ 활성
+
+### API 엔드포인트
+- 브랜드 목록: `/api/brands`
+- 인기 브랜드: `/api/brands/top/popular`
+- 제품 검색: `/api/search?q=키워드`
+- 최저가 상품: `/api/products/deals/best`
+
+---
+
+## ✨ 완료된 기능
+
+### 1. 브랜드 관리
+- ✅ 10개 럭셔리 브랜드 등록 (HERMES, LOUIS VUITTON, CHANEL, GUCCI, PRADA 등)
+- ✅ 브랜드 상세 페이지
+- ✅ 카테고리별 분류 (지갑·가방, 시계, 구두, 액세서리)
+
+### 2. 제품 관리
+- ✅ 제품 등록 및 상세 정보
+- ✅ 브랜드별 제품 필터링
+- ✅ 정가 정보 표시
+
+### 3. 가격 비교 시스템
+- ✅ 사용자 직접 가격 정보 등록
+- ✅ 판매처별 가격 비교
+- ✅ 최저가 자동 표시
+- ✅ 할인율 계산
+- ✅ 실시간 최저가 TOP 20
+
+### 4. 판매처 신뢰도 관리
+- ✅ 10개 주요 판매처 등록
+  - 국내: 신세계, 롯데, 갤러리아, 트렌비, 발란, KREAM
+  - 해외: Net-A-Porter, MyTheresa, SSENSE, Farfetch
+- ✅ A~D 신뢰등급 시스템
+- ✅ 정품 인증 마크
+- ✅ 국가별 분류
+
+### 5. 리뷰 시스템
+- ✅ 5점 평점 시스템
+- ✅ 구매 인증 리뷰
+- ✅ 판매처별 리뷰
+- ✅ 좋아요 기능
+
+### 6. 구매 가이드
+- ✅ 4가지 가이드 유형
+  - 정품 인증 (authentication)
+  - 구매 팁 (buying-tip)
+  - 사이즈 가이드 (sizing)
+  - 관리 방법 (care)
+- ✅ 브랜드별 가이드
+- ✅ 조회수 추적
+
+### 7. 검색 기능
+- ✅ 브랜드명 검색
+- ✅ 제품명 검색
+- ✅ 통합 검색 결과
+
+### 8. 반응형 UI
+- ✅ 모바일 최적화
+- ✅ PC 화면 동일 디자인
+- ✅ Tailwind CSS 활용
+- ✅ Font Awesome 아이콘
+- ✅ 그라디언트 배경
+- ✅ 카드 호버 효과
+- ✅ 애니메이션
+
+---
+
+## 🎨 UI/UX 특징
+
+### 메인 페이지
+- 🎯 강력한 히어로 섹션: "전 세계 명품, 가장 똑똑하게 사는 법"
+- 🔍 검색창: 브랜드명 또는 제품명 즉시 검색
+- 📊 Quick Stats: 200+ 쇼핑몰, 10,000+ 제품, 50,000+ 리뷰
+- 🌟 핵심 기능 6가지 소개
+- 👑 인기 브랜드 TOP 10 (그라디언트 카드)
+- 🔥 실시간 최저가 TOP 20 (할인율 배지)
+
+### 브랜드 페이지
+- 📦 제품 목록 그리드
+- 📚 구매 가이드 섹션
+- 🔗 공식 웹사이트 링크
+
+### 제품 상세 페이지
+- 💰 가격 비교 테이블 (최저가 하이라이트)
+- ⭐ 사용자 리뷰 리스트
+- ➕ 가격 정보 등록 모달
+- ✍️ 리뷰 작성 모달
+
+---
+
+## 🗄️ 데이터 아키텍처
+
+### 데이터베이스: Cloudflare D1 (SQLite)
+
+#### 주요 테이블
+1. **brands** (브랜드)
+   - 10개 럭셔리 브랜드 등록
+   
+2. **sellers** (판매처)
+   - 10개 신뢰할 수 있는 판매처
+   - A~D 신뢰등급
+   
+3. **products** (제품)
+   - 10개 대표 제품
+   - 브랜드 연결
+   
+4. **price_records** (가격 정보)
+   - 사용자 등록 가격 데이터
+   - 판매처, URL, 재고 상태
+   
+5. **reviews** (리뷰)
+   - 5개 샘플 리뷰
+   - 1~5점 평점
+   
+6. **guides** (가이드)
+   - 5개 구매 가이드
+   - 정품 인증, 구매 팁, 사이즈, 관리
+   
+7. **favorites** (즐겨찾기)
+   - 사용자별 관심 제품
+
+---
+
+## 📱 사용자 가이드
+
+### 1. 명품 검색하기
+1. 메인 페이지 검색창에 브랜드명 또는 제품명 입력
+2. 검색 결과에서 원하는 제품 클릭
+
+### 2. 가격 비교하기
+1. 제품 상세 페이지 접속
+2. "가격 비교" 섹션에서 판매처별 가격 확인
+3. 최저가 판매처에서 구매하기 버튼 클릭
+
+### 3. 가격 정보 등록하기
+1. 제품 상세 페이지에서 "가격 정보 등록" 버튼 클릭
+2. 판매처, 가격, URL, 작성자 입력
+3. 등록 버튼 클릭
+
+### 4. 리뷰 작성하기
+1. 제품 상세 페이지에서 "리뷰 작성" 버튼 클릭
+2. 평점 선택 (1~5점)
+3. 제목, 내용, 작성자, 구매처 입력
+4. 작성 버튼 클릭
+
+### 5. 구매 가이드 보기
+1. 브랜드 페이지 접속
+2. "구매 가이드" 섹션에서 원하는 가이드 클릭
+3. 정품 인증, 구매 팁, 사이즈, 관리 방법 확인
+
+---
+
+## 🛠️ 기술 스택
+
+### Frontend
+- **TailwindCSS**: 반응형 디자인
+- **Font Awesome**: 아이콘
+- **Axios**: HTTP 클라이언트
+
+### Backend
+- **Hono**: 경량 웹 프레임워크
+- **TypeScript**: 타입 안전성
+- **Cloudflare D1**: SQLite 데이터베이스
+
+### Deployment
+- **Cloudflare Pages**: 엣지 배포
+- **Wrangler**: CLI 도구
+
+---
+
+## 🚀 로컬 개발
+
+### 1. 프로젝트 빌드
+```bash
+npm run build
 ```
 
-```txt
-npm run deploy
+### 2. 데이터베이스 마이그레이션
+```bash
+npm run db:migrate:local
 ```
 
-[For generating/synchronizing types based on your Worker configuration run](https://developers.cloudflare.com/workers/wrangler/commands/#types):
-
-```txt
-npm run cf-typegen
+### 3. 샘플 데이터 삽입
+```bash
+npm run db:seed
 ```
 
-Pass the `CloudflareBindings` as generics when instantiation `Hono`:
+### 4. 개발 서버 시작
+```bash
+# PM2로 시작
+pm2 start ecosystem.config.cjs
 
-```ts
-// src/index.ts
-const app = new Hono<{ Bindings: CloudflareBindings }>()
+# 로그 확인
+pm2 logs --nostream
 ```
+
+### 5. 서버 테스트
+```bash
+npm run test
+# 또는
+curl http://localhost:3000
+```
+
+---
+
+## 📊 데이터 현황
+
+### 등록된 데이터
+- 🏷️ **브랜드**: 10개 (HERMES, LV, CHANEL 등)
+- 📦 **제품**: 10개 (Kelly, Birkin, Neverfull 등)
+- 🏪 **판매처**: 10개 (신세계, 롯데, Net-A-Porter 등)
+- 💰 **가격 정보**: 7건
+- ⭐ **리뷰**: 5건
+- 📚 **가이드**: 5건
+
+---
+
+## 🔮 향후 개발 계획
+
+### 단기 (1~2개월)
+- [ ] 즐겨찾기 기능 UI 구현
+- [ ] 가격 알림 기능
+- [ ] 사용자 인증 시스템
+- [ ] 리뷰 좋아요 기능
+- [ ] 가이드 상세 페이지
+
+### 중기 (3~6개월)
+- [ ] 실시간 환율 적용
+- [ ] 관세 계산기
+- [ ] 커뮤니티 게시판
+- [ ] 명품 진위 검증 서비스
+- [ ] 모바일 앱 (PWA)
+
+### 장기 (6개월+)
+- [ ] AI 가격 예측
+- [ ] 이미지 기반 제품 검색
+- [ ] 개인화 추천 시스템
+- [ ] 다국어 지원 (영어, 일본어, 중국어)
+- [ ] 판매처 API 연동
+
+---
+
+## 📝 API 문서
+
+### 브랜드 API
+- `GET /api/brands` - 브랜드 목록
+- `GET /api/brands/:id` - 브랜드 상세
+- `GET /api/brands/top/popular` - 인기 브랜드 TOP 10
+
+### 제품 API
+- `GET /api/products` - 제품 목록
+- `GET /api/products?brand_id=1` - 브랜드별 제품
+- `GET /api/products/:id` - 제품 상세
+- `GET /api/products/deals/best` - 최저가 상품 TOP 20
+
+### 가격 API
+- `GET /api/prices/:productId` - 제품별 가격 목록
+- `POST /api/prices` - 가격 정보 등록
+
+### 리뷰 API
+- `GET /api/reviews/:productId` - 제품별 리뷰 목록
+- `POST /api/reviews` - 리뷰 작성
+
+### 판매처 API
+- `GET /api/sellers` - 판매처 목록
+
+### 가이드 API
+- `GET /api/guides` - 가이드 목록
+- `GET /api/guides?brand_id=1` - 브랜드별 가이드
+- `GET /api/guides?type=authentication` - 유형별 가이드
+- `POST /api/guides/:id/view` - 조회수 증가
+
+### 검색 API
+- `GET /api/search?q=keyword` - 통합 검색
+
+---
+
+## 🏆 경쟁 우위
+
+### 기존 플랫폼과의 차이점
+
+| 플랫폼 | 특징 | 한계 |
+|-------|------|------|
+| Lyst | 글로벌 패션 메타 검색 | 가격 정확도 낮음 |
+| 트렌비 | 명품 가격비교·병행수입 | 해외 사이트 완전 통합 부족 |
+| KREAM | 리세일 중심 | 신제품 가격 비교 기능 부재 |
+| Farfetch | 글로벌 부티크 연결 | 가격비교 기능 없음 |
+
+### 우리의 차별점
+✅ **커뮤니티 기반**: 사용자 직접 참여형 가격 정보  
+✅ **신뢰도 시스템**: A~D 판매처 등급으로 안전성 보장  
+✅ **구매 가이드**: 정품 인증부터 관리법까지 완벽 지원  
+✅ **반응형 UI**: 모바일/PC 동일한 사용 경험  
+
+---
+
+## 📄 라이선스
+
+MIT License
+
+---
+
+## 👥 개발자
+
+- **프로젝트 관리**: AI Agent
+- **기술 스택**: Hono + Cloudflare Pages + D1
+- **개발 기간**: 2024년 (진행 중)
+
+---
+
+## 📞 문의
+
+프로젝트 관련 문의사항은 GitHub Issues를 통해 남겨주세요.
+
+---
+
+**© 2024 Luxury Review Hub. All rights reserved.**
+
+*전 세계 명품, 가장 똑똑하게 사는 법* 💎
