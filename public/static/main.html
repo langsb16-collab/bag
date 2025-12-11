@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">럭셔리 리뷰 허브 - 전 세계 명품 가격비교 & 리뷰</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="/static/translations.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans KR", "Noto Sans SC", "Noto Sans JP", sans-serif; }
+      .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+      .glass { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); }
+      .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+      .transition-all { transition: all 0.3s ease; }
+      .animate-fade-in { animation: fadeIn 0.6s ease-in; }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+      
+      /* 언어 선택기 스타일 */
+      .lang-selector {
+        position: relative;
+        display: inline-block;
+      }
+      .lang-dropdown {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        margin-top: 8px;
+        min-width: 160px;
+        z-index: 1000;
+      }
+      .lang-selector:hover .lang-dropdown {
+        display: block;
+      }
+      .lang-option {
+        padding: 12px 16px;
+        cursor: pointer;
+        transition: background 0.2s;
+        border-bottom: 1px solid #f0f0f0;
+      }
+      .lang-option:last-child {
+        border-bottom: none;
+      }
+      .lang-option:hover {
+        background: #f8f8f8;
+      }
+      .lang-option.active {
+        background: #667eea;
+        color: white;
+      }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Hero Section -->
+    <div class="gradient-bg text-white">
+        <div class="container mx-auto px-4 py-16 md:py-24">
+            <!-- Language Selector -->
+            <div class="flex justify-end mb-4">
+                <div class="lang-selector">
+                    <button class="glass px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-white hover:bg-opacity-20 transition-all">
+                        <i class="fas fa-globe"></i>
+                        <span id="currentLangName"></span>
+                        <i class="fas fa-chevron-down text-sm"></i>
+                    </button>
+                    <div class="lang-dropdown" id="langDropdown">
+                        <div class="lang-option" onclick="changeLang('ko')">🇰🇷 한국어</div>
+                        <div class="lang-option" onclick="changeLang('en')">🇺🇸 English</div>
+                        <div class="lang-option" onclick="changeLang('zh')">🇨🇳 中文</div>
+                        <div class="lang-option" onclick="changeLang('ja')">🇯🇵 日本語</div>
+                        <div class="lang-option" onclick="changeLang('vi')">🇻🇳 Tiếng Việt</div>
+                        <div class="lang-option" onclick="changeLang('mn')">🇲🇳 Монгол</div>
+                        <div class="lang-option" onclick="changeLang('ru')">🇷🇺 Русский</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center animate-fade-in">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6">
+                    <i class="fas fa-gem mr-3"></i>
+                    <span id="heroTitle"></span>
+                </h1>
+                <p class="text-xl md:text-2xl mb-8 opacity-90" id="heroSubtitle"></p>
+                <p class="text-lg md:text-xl mb-10 opacity-80" id="heroDescription"></p>
+                
+                <!-- Search Bar -->
+                <div class="max-w-3xl mx-auto">
+                    <div class="relative">
+                        <input 
+                            type="text" 
+                            id="searchInput"
+                            class="w-full px-6 py-5 pr-16 rounded-full text-gray-800 text-lg focus:outline-none focus:ring-4 focus:ring-purple-300 shadow-2xl"
+                        >
+                        <button 
+                            onclick="searchProducts()"
+                            class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-full transition-all"
+                        >
+                            <i class="fas fa-search mr-2"></i><span id="searchButton"></span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Quick Stats -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 max-w-4xl mx-auto">
+                    <div class="glass rounded-lg p-4">
+                        <div class="text-3xl font-bold">200+</div>
+                        <div class="text-sm opacity-80" id="stat1Title"></div>
+                    </div>
+                    <div class="glass rounded-lg p-4">
+                        <div class="text-3xl font-bold">10,000+</div>
+                        <div class="text-sm opacity-80" id="stat2Title"></div>
+                    </div>
+                    <div class="glass rounded-lg p-4">
+                        <div class="text-3xl font-bold">50,000+</div>
+                        <div class="text-sm opacity-80" id="stat3Title"></div>
+                    </div>
+                    <div class="glass rounded-lg p-4">
+                        <div class="text-3xl font-bold">A~D</div>
+                        <div class="text-sm opacity-80" id="stat4Title"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="container mx-auto px-4 py-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">
+            <i class="fas fa-star text-yellow-500 mr-2"></i>
+            <span id="featuresTitle"></span>
+        </h2>
+        
+        <div class="grid md:grid-cols-3 gap-8 mb-16">
+            <div class="bg-white rounded-2xl p-8 shadow-lg card-hover transition-all">
+                <div class="text-5xl mb-4">💰</div>
+                <h3 class="text-xl font-bold mb-3" id="feature1Title"></h3>
+                <p class="text-gray-600" id="feature1Desc"></p>
+            </div>
+            
+            <div class="bg-white rounded-2xl p-8 shadow-lg card-hover transition-all">
+                <div class="text-5xl mb-4">✅</div>
+                <h3 class="text-xl font-bold mb-3" id="feature2Title"></h3>
+                <p class="text-gray-600" id="feature2Desc"></p>
+            </div>
+            
+            <div class="bg-white rounded-2xl p-8 shadow-lg card-hover transition-all">
+                <div class="text-5xl mb-4">📝</div>
+                <h3 class="text-xl font-bold mb-3" id="feature3Title"></h3>
+                <p class="text-gray-600" id="feature3Desc"></p>
+            </div>
+            
+            <div class="bg-white rounded-2xl p-8 shadow-lg card-hover transition-all">
+                <div class="text-5xl mb-4">🔍</div>
+                <h3 class="text-xl font-bold mb-3" id="feature4Title"></h3>
+                <p class="text-gray-600" id="feature4Desc"></p>
+            </div>
+            
+            <div class="bg-white rounded-2xl p-8 shadow-lg card-hover transition-all">
+                <div class="text-5xl mb-4">📊</div>
+                <h3 class="text-xl font-bold mb-3" id="feature5Title"></h3>
+                <p class="text-gray-600" id="feature5Desc"></p>
+            </div>
+            
+            <div class="bg-white rounded-2xl p-8 shadow-lg card-hover transition-all">
+                <div class="text-5xl mb-4">🌍</div>
+                <h3 class="text-xl font-bold mb-3" id="feature6Title"></h3>
+                <p class="text-gray-600" id="feature6Desc"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popular Brands -->
+    <div class="bg-white py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">
+                <i class="fas fa-crown text-yellow-500 mr-2"></i>
+                <span id="popularBrandsTitle"></span>
+            </h2>
+            <div id="popularBrands" class="grid grid-cols-2 md:grid-cols-5 gap-6">
+                <div class="animate-pulse bg-gray-200 h-24 rounded-lg"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Best Deals -->
+    <div class="container mx-auto px-4 py-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">
+            <i class="fas fa-fire text-red-500 mr-2"></i>
+            <span id="bestDealsTitle"></span>
+        </h2>
+        <div id="bestDeals" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="animate-pulse bg-gray-200 h-64 rounded-lg"></div>
+        </div>
+    </div>
+
+    <!-- Search Results -->
+    <div id="searchResults" class="container mx-auto px-4 py-8 hidden">
+        <h2 class="text-2xl font-bold mb-6" id="searchResultsTitle"></h2>
+        <div id="searchContent"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="gradient-bg text-white py-12 mt-16">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-lg mb-4" id="footerCopyright"></p>
+            <p class="opacity-80" id="footerSlogan"></p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
+    <script>
+      // 페이지 로드 시 언어 설정
+      function initTranslations() {
+        document.getElementById('currentLangName').textContent = languageNames[currentLang];
+        document.getElementById('heroTitle').textContent = t('heroTitle');
+        document.getElementById('heroSubtitle').textContent = t('heroSubtitle');
+        document.getElementById('heroDescription').textContent = t('heroDescription');
+        document.getElementById('searchInput').placeholder = t('searchPlaceholder');
+        document.getElementById('searchButton').textContent = t('searchButton');
+        
+        document.getElementById('stat1Title').textContent = t('stat1Title');
+        document.getElementById('stat2Title').textContent = t('stat2Title');
+        document.getElementById('stat3Title').textContent = t('stat3Title');
+        document.getElementById('stat4Title').textContent = t('stat4Title');
+        
+        document.getElementById('featuresTitle').textContent = t('featuresTitle');
+        document.getElementById('feature1Title').textContent = t('feature1Title');
+        document.getElementById('feature1Desc').textContent = t('feature1Desc');
+        document.getElementById('feature2Title').textContent = t('feature2Title');
+        document.getElementById('feature2Desc').textContent = t('feature2Desc');
+        document.getElementById('feature3Title').textContent = t('feature3Title');
+        document.getElementById('feature3Desc').textContent = t('feature3Desc');
+        document.getElementById('feature4Title').textContent = t('feature4Title');
+        document.getElementById('feature4Desc').textContent = t('feature4Desc');
+        document.getElementById('feature5Title').textContent = t('feature5Title');
+        document.getElementById('feature5Desc').textContent = t('feature5Desc');
+        document.getElementById('feature6Title').textContent = t('feature6Title');
+        document.getElementById('feature6Desc').textContent = t('feature6Desc');
+        
+        document.getElementById('popularBrandsTitle').textContent = t('popularBrandsTitle');
+        document.getElementById('bestDealsTitle').textContent = t('bestDealsTitle');
+        document.getElementById('searchResultsTitle').textContent = t('searchResultsTitle');
+        
+        document.getElementById('footerCopyright').textContent = t('footerCopyright');
+        document.getElementById('footerSlogan').textContent = t('footerSlogan');
+        
+        // 현재 언어 활성화 표시
+        document.querySelectorAll('.lang-option').forEach(opt => {
+          opt.classList.remove('active');
+        });
+        const currentOpt = Array.from(document.querySelectorAll('.lang-option')).find(el => 
+          el.textContent.includes(languageNames[currentLang])
+        );
+        if (currentOpt) currentOpt.classList.add('active');
+      }
+      
+      // 검색 기능
+      async function searchProducts() {
+        const keyword = document.getElementById('searchInput').value.trim();
+        if (!keyword) {
+          alert(t('enterKeyword'));
+          return;
+        }
+        
+        try {
+          const response = await axios.get('/api/search?q=' + encodeURIComponent(keyword));
+          displaySearchResults(response.data.data);
+        } catch (error) {
+          console.error('검색 오류:', error);
+          alert(t('searchError'));
+        }
+      }
+      
+      // 검색 결과 표시
+      function displaySearchResults(data) {
+        const resultsDiv = document.getElementById('searchResults');
+        const contentDiv = document.getElementById('searchContent');
+        
+        let html = '';
+        
+        if (data.brands.length > 0) {
+          html += '<h3 class="text-xl font-bold mb-4">' + t('brand') + '</h3>';
+          html += '<div class="grid md:grid-cols-3 gap-4 mb-8">';
+          data.brands.forEach(brand => {
+            html += `
+              <div class="bg-white rounded-lg p-4 shadow cursor-pointer hover:shadow-lg transition-all" onclick="location.href='/brand/${brand.id}'">
+                <h4 class="font-bold text-lg">${brand.name}</h4>
+                <p class="text-sm text-gray-600">${brand.category}</p>
+              </div>
+            `;
+          });
+          html += '</div>';
+        }
+        
+        if (data.products.length > 0) {
+          html += '<h3 class="text-xl font-bold mb-4">' + t('product') + '</h3>';
+          html += '<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">';
+          data.products.forEach(product => {
+            const priceText = product.official_price ? product.official_price.toLocaleString() + (currentLang === 'ko' ? '원' : '') : t('noPrice');
+            html += `
+              <div class="bg-white rounded-lg p-6 shadow card-hover cursor-pointer" onclick="location.href='/product/${product.id}'">
+                <h4 class="font-bold text-lg mb-2">${product.brand_name}</h4>
+                <p class="text-gray-800 mb-2">${product.model_name}</p>
+                <p class="text-purple-600 font-bold">${priceText}</p>
+              </div>
+            `;
+          });
+          html += '</div>';
+        }
+        
+        if (data.brands.length === 0 && data.products.length === 0) {
+          html = '<p class="text-center text-gray-600">' + t('noResults') + '</p>';
+        }
+        
+        contentDiv.innerHTML = html;
+        resultsDiv.classList.remove('hidden');
+        resultsDiv.scrollIntoView({ behavior: 'smooth' });
+      }
+      
+      // 엔터키로 검색
+      document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('searchInput').addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') searchProducts();
+        });
+      });
+      
+      // 인기 브랜드 로드
+      async function loadPopularBrands() {
+        try {
+          const response = await axios.get('/api/brands/top/popular');
+          const brands = response.data.data;
+          
+          const html = brands.map(brand => `
+            <div class="bg-gradient-to-br from-purple-500 to-pink-500 text-white rounded-xl p-6 shadow-lg card-hover cursor-pointer transition-all" onclick="location.href='/brand/${brand.id}'">
+              <h3 class="font-bold text-lg mb-2">${brand.name}</h3>
+              <p class="text-sm opacity-90">${brand.category}</p>
+              <p class="text-xs mt-2 opacity-75">${brand.product_count || 0}${t('products')}</p>
+            </div>
+          `).join('');
+          
+          document.getElementById('popularBrands').innerHTML = html;
+        } catch (error) {
+          console.error('브랜드 로드 오류:', error);
+        }
+      }
+      
+      // 최저가 상품 로드
+      async function loadBestDeals() {
+        try {
+          const response = await axios.get('/api/products/deals/best');
+          const products = response.data.data;
+          
+          const html = products.map(product => `
+            <div class="bg-white rounded-xl p-6 shadow-lg card-hover cursor-pointer transition-all" onclick="location.href='/product/${product.id}'">
+              <div class="flex justify-between items-start mb-3">
+                <div>
+                  <h3 class="font-bold text-lg">${product.brand_name}</h3>
+                  <p class="text-gray-600">${product.model_name}</p>
+                </div>
+                <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                  -${product.discount_rate}%
+                </span>
+              </div>
+              <div class="border-t pt-3">
+                <p class="text-sm text-gray-500 line-through">${product.official_price.toLocaleString()}${currentLang === 'ko' ? '원' : ''}</p>
+                <p class="text-2xl font-bold text-purple-600">${product.lowest_price.toLocaleString()}${currentLang === 'ko' ? '원' : ''}</p>
+                <p class="text-sm text-green-600 mt-2">
+                  <i class="fas fa-check-circle mr-1"></i>
+                  ${(product.official_price - product.lowest_price).toLocaleString()}${currentLang === 'ko' ? '원' : ''} ${t('save')}
+                </p>
+              </div>
+            </div>
+          `).join('');
+          
+          document.getElementById('bestDeals').innerHTML = html;
+        } catch (error) {
+          console.error('최저가 로드 오류:', error);
+        }
+      }
+      
+      // 페이지 로드 시 실행
+      initTranslations();
+      loadPopularBrands();
+      loadBestDeals();
+    </script>
+</body>
+</html>

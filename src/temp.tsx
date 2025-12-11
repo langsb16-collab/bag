@@ -1,7 +1,6 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { serveStatic } from 'hono/cloudflare-workers'
-import { mainPageHTML } from './main-page'
 
 type Bindings = {
   DB: D1Database;
@@ -13,7 +12,7 @@ const app = new Hono<{ Bindings: Bindings }>()
 app.use('/api/*', cors())
 
 // Static 파일 제공
-app.use('/static/*', serveStatic())
+app.use('/static/*', serveStatic({ root: './' }))
 
 // ==================== API 라우트 ====================
 
@@ -273,5 +272,13 @@ app.get('/api/products/deals/best', async (c) => {
 })
 
 // ==================== 메인 페이지 ====================
-app.get("/", (c) => c.html(mainPageHTML))
-export default app
+app.get('/', (c) => {
+// ==================== 메인 페이지 ====================
+app.get('/', async (c) => {
+  // 다국어 지원 HTML 파일로 리다이렉트
+  const html = await fetch('https://raw.githubusercontent.com/user/webapp/main/public/static/main.html').catch(() => null);
+  
+  // 로컬 파일 사용
+  return c.html(`<!DOCTYPE html>
+<html><head><meta http-equiv="refresh" content="0;url=/static/main.html"></head></html>`)
+})
