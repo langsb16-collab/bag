@@ -20,9 +20,20 @@
 
 ## 🌐 공개 URL
 
-### 개발 서버
-- **URL**: https://3000-ijgzvb87c568z5syk15p5-2e77fc33.sandbox.novita.ai
-- **상태**: ✅ 활성
+### 🚀 프로덕션 (Cloudflare Pages)
+- **메인 URL**: https://tourit.bio (커스텀 도메인)
+- **Pages URL**: https://bag-9j7.pages.dev
+- **최신 배포**: https://8cf04a1c.bag-9j7.pages.dev
+- **상태**: ✅ 배포 완료
+
+### 📦 GitHub 저장소
+- **저장소**: https://github.com/langsb16-collab/bag
+- **브랜치**: main
+
+### 💾 Cloudflare D1 Database
+- **프로젝트명**: bag-production
+- **Database ID**: 6606563d-fa7c-49a7-81bb-6f6e7dc2ffac
+- **리전**: ENAM (Europe & North America)
 
 ### API 엔드포인트
 - 브랜드 목록: `/api/brands`
