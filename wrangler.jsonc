@@ -1,7 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "webapp",
-  "main": "src/index.tsx",
+  "name": "bag",
   "compatibility_date": "2024-01-01",
   "compatibility_flags": ["nodejs_compat"],
   "pages_build_output_dir": "./dist",
@@ -9,8 +8,8 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "webapp-production",
-      "database_id": "placeholder"
+      "database_name": "bag-production",
+      "database_id": "6606563d-fa7c-49a7-81bb-6f6e7dc2ffac"
     }
   ]
 }
