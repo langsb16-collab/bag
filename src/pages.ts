@@ -21,6 +21,11 @@ export function getMainPageHTML() {
           @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
           
           /* 언어 선택 버튼 - 모던하고 세련되게 */
+          .lang-container {
+            position: relative;
+            display: inline-block;
+            z-index: 9999;
+          }
           .lang-btn {
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
             backdrop-filter: blur(20px);
@@ -31,6 +36,11 @@ export function getMainPageHTML() {
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
             color: #667eea;
             font-size: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
           }
           .lang-btn:hover {
             background: linear-gradient(135deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.95));
@@ -42,15 +52,22 @@ export function getMainPageHTML() {
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
           }
           .lang-menu {
+            position: absolute;
+            top: calc(100% + 12px);
+            right: 0;
             background: linear-gradient(180deg, #ffffff 0%, #f8f9ff 100%);
             border: 2px solid rgba(102, 126, 234, 0.2);
             border-radius: 16px;
             box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);
             max-height: 320px;
+            min-width: 200px;
             overflow-y: auto;
             overflow-x: hidden;
-            z-index: 9999;
-            position: absolute;
+            z-index: 10000;
+            display: none;
+          }
+          .lang-menu.show {
+            display: block;
           }
           .lang-option {
             padding: 12px 18px;
@@ -59,6 +76,10 @@ export function getMainPageHTML() {
             border-bottom: 1px solid rgba(102, 126, 234, 0.08);
             display: flex;
             align-items: center;
+            background: transparent;
+            border: none;
+            width: 100%;
+            text-align: left;
           }
           .lang-option:last-child {
             border-bottom: none;

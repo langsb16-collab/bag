@@ -630,17 +630,18 @@ function getLangSelectorHTML() {
   const currentLangData = langs.find(l => l.code === currentLang);
   
   return `
-    <div class="relative inline-block" style="z-index: 9999;">
-      <button id="langBtn" class="lang-btn flex items-center gap-2 transition-all">
+    <div class="lang-container">
+      <button id="langBtn" class="lang-btn" type="button">
         <i class="fas fa-globe"></i>
         <span class="font-bold">${currentLangData.flag} ${currentLangData.name}</span>
         <i class="fas fa-chevron-down text-xs"></i>
       </button>
-      <div id="langMenu" class="lang-menu hidden right-0 mt-3 w-48" style="position: absolute; top: 100%; z-index: 10000;">
+      <div id="langMenu" class="lang-menu">
         ${langs.map(lang => `
           <button 
+            type="button"
             onclick="changeLang('${lang.code}')" 
-            class="lang-option w-full ${lang.code === currentLang ? 'active' : ''}">
+            class="lang-option ${lang.code === currentLang ? 'active' : ''}">
             <span class="text-xl mr-2">${lang.flag}</span>
             <span class="text-sm">${lang.name}</span>
             ${lang.code === currentLang ? '<i class="fas fa-check text-purple-600 ml-auto text-sm"></i>' : '<span class="ml-auto"></span>'}
@@ -653,28 +654,52 @@ function getLangSelectorHTML() {
 
 // 언어 선택기 초기화 함수
 function initLangSelector() {
+  console.log('=== 언어 선택기 초기화 시작 ===');
+  
   const langBtn = document.getElementById('langBtn');
   const langMenu = document.getElementById('langMenu');
   
-  if (!langBtn || !langMenu) {
-    console.warn('Language selector elements not found');
+  if (!langBtn) {
+    console.error('언어 버튼을 찾을 수 없습니다');
     return;
   }
+  
+  if (!langMenu) {
+    console.error('언어 메뉴를 찾을 수 없습니다');
+    return;
+  }
+  
+  console.log('언어 버튼:', langBtn);
+  console.log('언어 메뉴:', langMenu);
   
   // 버튼 클릭 이벤트
   langBtn.addEventListener('click', function(e) {
     e.preventDefault();
     e.stopPropagation();
-    langMenu.classList.toggle('hidden');
-    console.log('Language menu toggled');
+    
+    const isShowing = langMenu.classList.contains('show');
+    if (isShowing) {
+      langMenu.classList.remove('show');
+      console.log('언어 메뉴 닫힘');
+    } else {
+      langMenu.classList.add('show');
+      console.log('언어 메뉴 열림');
+    }
   });
   
   // 메뉴 외부 클릭 시 닫기
   document.addEventListener('click', function(e) {
-    if (!e.target.closest('#langBtn') && !e.target.closest('#langMenu')) {
-      langMenu.classList.add('hidden');
+    if (!langBtn.contains(e.target) && !langMenu.contains(e.target)) {
+      langMenu.classList.remove('show');
     }
   });
   
-  console.log('Language selector initialized');
+  // ESC 키로 닫기
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      langMenu.classList.remove('show');
+    }
+  });
+  
+  console.log('=== 언어 선택기 초기화 완료 ===');
 }
