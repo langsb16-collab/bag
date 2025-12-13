@@ -23,8 +23,8 @@
 ### 🚀 프로덕션 (Cloudflare Pages)
 - **메인 URL**: https://tourit.bio (커스텀 도메인)
 - **Pages URL**: https://bag-9j7.pages.dev
-- **최신 배포**: https://8cf04a1c.bag-9j7.pages.dev
-- **상태**: ✅ 배포 완료
+- **최신 배포**: https://329f0423.bag-9j7.pages.dev
+- **상태**: ✅ 배포 완료 (모든 기능 정상 작동)
 
 ### 📦 GitHub 저장소
 - **저장소**: https://github.com/langsb16-collab/bag
