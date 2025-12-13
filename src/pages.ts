@@ -49,6 +49,8 @@ export function getMainPageHTML() {
             max-height: 320px;
             overflow-y: auto;
             overflow-x: hidden;
+            z-index: 9999;
+            position: absolute;
           }
           .lang-option {
             padding: 12px 18px;

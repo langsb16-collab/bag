@@ -630,13 +630,13 @@ function getLangSelectorHTML() {
   const currentLangData = langs.find(l => l.code === currentLang);
   
   return `
-    <div class="relative inline-block">
+    <div class="relative inline-block" style="z-index: 9999;">
       <button id="langBtn" class="lang-btn flex items-center gap-2 transition-all">
         <i class="fas fa-globe"></i>
         <span class="font-bold">${currentLangData.flag} ${currentLangData.name}</span>
         <i class="fas fa-chevron-down text-xs"></i>
       </button>
-      <div id="langMenu" class="lang-menu hidden absolute right-0 mt-3 w-48">
+      <div id="langMenu" class="lang-menu hidden right-0 mt-3 w-48" style="position: absolute; top: 100%; z-index: 10000;">
         ${langs.map(lang => `
           <button 
             onclick="changeLang('${lang.code}')" 
