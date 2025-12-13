@@ -238,18 +238,20 @@ export function getMainPageHTML() {
         </footer>
 
         <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
-        <script src="/static/i18n.js?v=2025121301"></script>
+        <script src="/static/i18n.js?v=2025121302"></script>
         <script>
           console.log('=== 메인 스크립트 로드 시작 ===');
           
           // 다국어 텍스트 적용
           function applyTranslations() {
-            console.log('applyTranslations 시작');
+            console.log('✅ applyTranslations 시작');
             try {
               if (typeof t !== 'function') {
-                console.error('번역 함수를 사용할 수 없습니다');
+                console.error('❌ 번역 함수를 사용할 수 없습니다');
                 return;
               }
+              
+              console.log('✅ 번역 함수 확인됨');
               
               // 안전하게 요소 업데이트
               const elements = {
