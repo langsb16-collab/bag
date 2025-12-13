@@ -219,8 +219,22 @@ export function getMainPageHTML() {
         <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
         <script src="/static/i18n.js"></script>
         <script>
+          // 안전한 번역 함수 wrapper
+          function safeT(key) {
+            if (typeof t === 'function') {
+              return t(key);
+            }
+            console.warn('Translation function not loaded yet for key:', key);
+            return key;
+          }
+          
           // 다국어 텍스트 적용
           function applyTranslations() {
+            if (typeof t !== 'function') {
+              console.error('Translation function not loaded');
+              return;
+            }
+            
             document.getElementById('hero-title').textContent = t('hero_title');
             document.getElementById('hero-subtitle').textContent = t('hero_subtitle');
             document.getElementById('hero-description').textContent = t('hero_description');
@@ -261,7 +275,8 @@ export function getMainPageHTML() {
           async function searchProducts() {
             const keyword = document.getElementById('searchInput').value.trim();
             if (!keyword) {
-              alert(t('enter_keyword'));
+              const msg = typeof t === 'function' ? t('enter_keyword') : 'Please enter a keyword';
+              alert(msg);
               return;
             }
             
@@ -282,7 +297,8 @@ export function getMainPageHTML() {
             let html = '';
             
             if (data.brands.length > 0) {
-              html += '<h3 class="text-xl font-bold mb-4">' + t('popular_brands') + '</h3>';
+              const brandsTitle = typeof t === 'function' ? t('popular_brands') : 'Popular Brands';
+              html += '<h3 class="text-xl font-bold mb-4">' + brandsTitle + '</h3>';
               html += '<div class="grid md:grid-cols-3 gap-4 mb-8">';
               data.brands.forEach(brand => {
                 html += \`
@@ -334,7 +350,7 @@ export function getMainPageHTML() {
                 <div class="bg-gradient-to-br from-purple-500 to-pink-500 text-white rounded-xl p-6 shadow-lg card-hover cursor-pointer transition-all" onclick="location.href='/brand/\${brand.id}'">
                   <h3 class="font-bold text-lg mb-2">\${brand.name}</h3>
                   <p class="text-sm opacity-90">\${brand.category}</p>
-                  <p class="text-xs mt-2 opacity-75">\${brand.product_count || 0} \${t('products_count')}</p>
+                  <p class="text-xs mt-2 opacity-75">\${brand.product_count || 0} \${typeof t === 'function' ? t('products_count') : 'products'}</p>
                 </div>
               \`).join('');
               
@@ -366,7 +382,7 @@ export function getMainPageHTML() {
                     <p class="text-2xl font-bold text-purple-600">\${product.lowest_price.toLocaleString()}</p>
                     <p class="text-sm text-green-600 mt-2">
                       <i class="fas fa-check-circle mr-1"></i>
-                      \${(product.official_price - product.lowest_price).toLocaleString()} \${t('save_amount')}
+                      \${(product.official_price - product.lowest_price).toLocaleString()} \${typeof t === 'function' ? t('save_amount') : 'saved'}
                     </p>
                   </div>
                 </div>
@@ -379,9 +395,18 @@ export function getMainPageHTML() {
           }
           
           // 페이지 로드 시 실행
-          applyTranslations();
-          loadPopularBrands();
-          loadBestDeals();
+          document.addEventListener('DOMContentLoaded', function() {
+            // i18n.js가 로드될 때까지 기다림
+            if (typeof t !== 'function') {
+              console.error('Translation function not available');
+              // 기본 영어로 폴백
+              window.t = function(key) { return key; };
+            }
+            
+            applyTranslations();
+            loadPopularBrands();
+            loadBestDeals();
+          });
         </script>
     </body>
     </html>
