@@ -651,17 +651,30 @@ function getLangSelectorHTML() {
   `;
 }
 
-// 언어 선택기 초기화
-document.addEventListener('DOMContentLoaded', () => {
-  // 언어 선택기 버튼 클릭 이벤트
-  document.addEventListener('click', (e) => {
-    const langBtn = document.getElementById('langBtn');
-    const langMenu = document.getElementById('langMenu');
-    
-    if (langBtn && e.target.closest('#langBtn')) {
-      langMenu.classList.toggle('hidden');
-    } else if (langMenu && !e.target.closest('#langMenu')) {
+// 언어 선택기 초기화 함수
+function initLangSelector() {
+  const langBtn = document.getElementById('langBtn');
+  const langMenu = document.getElementById('langMenu');
+  
+  if (!langBtn || !langMenu) {
+    console.warn('Language selector elements not found');
+    return;
+  }
+  
+  // 버튼 클릭 이벤트
+  langBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    langMenu.classList.toggle('hidden');
+    console.log('Language menu toggled');
+  });
+  
+  // 메뉴 외부 클릭 시 닫기
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('#langBtn') && !e.target.closest('#langMenu')) {
       langMenu.classList.add('hidden');
     }
   });
-});
+  
+  console.log('Language selector initialized');
+}

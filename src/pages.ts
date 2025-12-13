@@ -271,6 +271,11 @@ export function getMainPageHTML() {
             // 언어 선택기 추가 (안전하게)
             if (typeof getLangSelectorHTML === 'function') {
               document.getElementById('langSelector').innerHTML = getLangSelectorHTML();
+              
+              // 언어 선택기 이벤트 초기화
+              if (typeof initLangSelector === 'function') {
+                initLangSelector();
+              }
             } else {
               console.error('getLangSelectorHTML function not found');
             }
