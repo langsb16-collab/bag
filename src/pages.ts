@@ -301,14 +301,16 @@ export function getMainPageHTML() {
                   langSelector.innerHTML = getLangSelectorHTML();
                   console.log('언어 선택기 HTML 추가됨');
                   
-                  // 언어 선택기 이벤트 초기화
-                  setTimeout(function() {
-                    if (typeof initLangSelector === 'function') {
-                      initLangSelector();
-                      console.log('언어 선택기 이벤트 초기화 완료');
-                    }
-                  }, 100);
+                  // 언어 선택기 이벤트 초기화 (즉시 실행)
+                  if (typeof initLangSelector === 'function') {
+                    initLangSelector();
+                    console.log('언어 선택기 이벤트 초기화 완료');
+                  } else {
+                    console.error('❌ initLangSelector 함수를 찾을 수 없습니다');
+                  }
                 }
+              } else {
+                console.error('❌ getLangSelectorHTML 함수를 찾을 수 없습니다');
               }
               
               console.log('applyTranslations 완료');
