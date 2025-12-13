@@ -217,95 +217,109 @@ export function getMainPageHTML() {
         </footer>
 
         <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
+        <script src="/static/i18n.js"></script>
         <script>
-          // 전역 변수 초기화
-          window.appInitialized = false;
-          
-          // i18n.js를 동적으로 로드하고 콜백 실행
-          function loadScript(src, callback) {
-            const script = document.createElement('script');
-            script.src = src;
-            script.onload = function() {
-              console.log('Script loaded:', src);
-              if (callback) callback();
-            };
-            script.onerror = function() {
-              console.error('Failed to load script:', src);
-            };
-            document.head.appendChild(script);
-          }
+          console.log('=== 스크립트 로드 시작 ===');
           
           // 다국어 텍스트 적용
           function applyTranslations() {
+            console.log('applyTranslations 시작');
             try {
               if (typeof t !== 'function') {
-                console.error('Translation function not loaded');
+                console.error('번역 함수를 사용할 수 없습니다');
                 return;
               }
               
-              document.getElementById('hero-title').textContent = t('hero_title');
-            document.getElementById('hero-subtitle').textContent = t('hero_subtitle');
-            document.getElementById('hero-description').textContent = t('hero_description');
-            document.getElementById('searchInput').placeholder = t('search_placeholder');
-            document.getElementById('search-btn').textContent = t('search_button');
-            
-            document.getElementById('stat-stores').textContent = t('stat_stores');
-            document.getElementById('stat-products').textContent = t('stat_products');
-            document.getElementById('stat-reviews').textContent = t('stat_reviews');
-            document.getElementById('stat-trust').textContent = t('stat_trust');
-            
-            document.getElementById('features-title').textContent = t('features_title');
-            document.getElementById('feature-price-title').textContent = t('feature_price_title');
-            document.getElementById('feature-price-desc').textContent = t('feature_price_desc');
-            document.getElementById('feature-seller-title').textContent = t('feature_seller_title');
-            document.getElementById('feature-seller-desc').textContent = t('feature_seller_desc');
-            document.getElementById('feature-review-title').textContent = t('feature_review_title');
-            document.getElementById('feature-review-desc').textContent = t('feature_review_desc');
-            document.getElementById('feature-auth-title').textContent = t('feature_auth_title');
-            document.getElementById('feature-auth-desc').textContent = t('feature_auth_desc');
-            document.getElementById('feature-trend-title').textContent = t('feature_trend_title');
-            document.getElementById('feature-trend-desc').textContent = t('feature_trend_desc');
-            document.getElementById('feature-global-title').textContent = t('feature_global_title');
-            document.getElementById('feature-global-desc').textContent = t('feature_global_desc');
-            
-            document.getElementById('popular-brands-title').textContent = t('popular_brands');
-            document.getElementById('best-deals-title').textContent = t('best_deals');
-            document.getElementById('search-results-title').textContent = t('search_results');
-            
-            document.getElementById('footer-copyright').textContent = t('footer_copyright');
-            document.getElementById('footer-tagline').textContent = t('footer_tagline');
-            
-              // 언어 선택기 추가 (안전하게)
-              if (typeof getLangSelectorHTML === 'function') {
-                document.getElementById('langSelector').innerHTML = getLangSelectorHTML();
-                
-                // 언어 선택기 이벤트 초기화
-                if (typeof initLangSelector === 'function') {
-                  initLangSelector();
+              // 안전하게 요소 업데이트
+              const elements = {
+                'hero-title': 'hero_title',
+                'hero-subtitle': 'hero_subtitle',
+                'hero-description': 'hero_description',
+                'search-btn': 'search_button',
+                'stat-stores': 'stat_stores',
+                'stat-products': 'stat_products',
+                'stat-reviews': 'stat_reviews',
+                'stat-trust': 'stat_trust',
+                'features-title': 'features_title',
+                'feature-price-title': 'feature_price_title',
+                'feature-price-desc': 'feature_price_desc',
+                'feature-seller-title': 'feature_seller_title',
+                'feature-seller-desc': 'feature_seller_desc',
+                'feature-review-title': 'feature_review_title',
+                'feature-review-desc': 'feature_review_desc',
+                'feature-auth-title': 'feature_auth_title',
+                'feature-auth-desc': 'feature_auth_desc',
+                'feature-trend-title': 'feature_trend_title',
+                'feature-trend-desc': 'feature_trend_desc',
+                'feature-global-title': 'feature_global_title',
+                'feature-global-desc': 'feature_global_desc',
+                'popular-brands-title': 'popular_brands',
+                'best-deals-title': 'best_deals',
+                'search-results-title': 'search_results',
+                'footer-copyright': 'footer_copyright',
+                'footer-tagline': 'footer_tagline'
+              };
+              
+              Object.keys(elements).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                  el.textContent = t(elements[id]);
                 }
-              } else {
-                console.error('getLangSelectorHTML function not found');
+              });
+              
+              // 검색 입력란 placeholder
+              const searchInput = document.getElementById('searchInput');
+              if (searchInput) {
+                searchInput.placeholder = t('search_placeholder');
               }
+              
+              // 언어 선택기 추가
+              if (typeof getLangSelectorHTML === 'function') {
+                const langSelector = document.getElementById('langSelector');
+                if (langSelector) {
+                  langSelector.innerHTML = getLangSelectorHTML();
+                  console.log('언어 선택기 HTML 추가됨');
+                  
+                  // 언어 선택기 이벤트 초기화
+                  setTimeout(function() {
+                    if (typeof initLangSelector === 'function') {
+                      initLangSelector();
+                      console.log('언어 선택기 이벤트 초기화 완료');
+                    }
+                  }, 100);
+                }
+              }
+              
+              console.log('applyTranslations 완료');
             } catch (error) {
-              console.error('Error in applyTranslations:', error);
+              console.error('applyTranslations 오류:', error);
             }
           }
           
           // 검색 기능
           async function searchProducts() {
+            console.log('검색 시작');
             try {
-              const keyword = document.getElementById('searchInput').value.trim();
+              const searchInput = document.getElementById('searchInput');
+              if (!searchInput) {
+                console.error('검색 입력란을 찾을 수 없습니다');
+                return;
+              }
+              
+              const keyword = searchInput.value.trim();
               if (!keyword) {
-                const msg = typeof t === 'function' ? t('enter_keyword') : 'Please enter a keyword';
+                const msg = typeof t === 'function' ? t('enter_keyword') : '검색어를 입력해주세요';
                 alert(msg);
                 return;
               }
               
+              console.log('검색어:', keyword);
               const response = await axios.get('/api/search?q=' + encodeURIComponent(keyword));
+              console.log('검색 결과:', response.data);
               displaySearchResults(response.data.data);
             } catch (error) {
-              console.error('Search error:', error);
-              alert('An error occurred during search');
+              console.error('검색 오류:', error);
+              alert('검색 중 오류가 발생했습니다');
             }
           }
           
@@ -314,143 +328,169 @@ export function getMainPageHTML() {
           
           // 검색 결과 표시
           function displaySearchResults(data) {
-            const resultsDiv = document.getElementById('searchResults');
-            const contentDiv = document.getElementById('searchContent');
-            
-            let html = '';
-            
-            if (data.brands.length > 0) {
-              const brandsTitle = typeof t === 'function' ? t('popular_brands') : 'Popular Brands';
-              html += '<h3 class="text-xl font-bold mb-4">' + brandsTitle + '</h3>';
-              html += '<div class="grid md:grid-cols-3 gap-4 mb-8">';
-              data.brands.forEach(brand => {
-                html += \`
-                  <div class="bg-white rounded-lg p-4 shadow cursor-pointer hover:shadow-lg transition-all" onclick="location.href='/brand/\${brand.id}'">
-                    <h4 class="font-bold text-lg">\${brand.name}</h4>
-                    <p class="text-sm text-gray-600">\${brand.category}</p>
-                  </div>
-                \`;
-              });
-              html += '</div>';
+            console.log('검색 결과 표시 시작:', data);
+            try {
+              const resultsDiv = document.getElementById('searchResults');
+              const contentDiv = document.getElementById('searchContent');
+              
+              if (!resultsDiv || !contentDiv) {
+                console.error('결과 표시 영역을 찾을 수 없습니다');
+                return;
+              }
+              
+              let html = '';
+              
+              if (data.brands && data.brands.length > 0) {
+                const brandsTitle = typeof t === 'function' ? t('popular_brands') : '인기 브랜드';
+                html += '<h3 class="text-xl font-bold mb-4">' + brandsTitle + '</h3>';
+                html += '<div class="grid md:grid-cols-3 gap-4 mb-8">';
+                data.brands.forEach(brand => {
+                  html += \`
+                    <div class="bg-white rounded-lg p-4 shadow cursor-pointer hover:shadow-lg transition-all" onclick="location.href='/brand/\${brand.id}'">
+                      <h4 class="font-bold text-lg">\${brand.name}</h4>
+                      <p class="text-sm text-gray-600">\${brand.category || ''}</p>
+                    </div>
+                  \`;
+                });
+                html += '</div>';
+              }
+              
+              if (data.products && data.products.length > 0) {
+                const productsTitle = typeof t === 'function' ? t('brand_products') : '제품 목록';
+                html += '<h3 class="text-xl font-bold mb-4">' + productsTitle + '</h3>';
+                html += '<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">';
+                data.products.forEach(product => {
+                  html += \`
+                    <div class="bg-white rounded-lg p-6 shadow card-hover cursor-pointer" onclick="location.href='/product/\${product.id}'">
+                      <h4 class="font-bold text-lg mb-2">\${product.brand_name || ''}</h4>
+                      <p class="text-gray-800 mb-2">\${product.model_name || ''}</p>
+                      <p class="text-purple-600 font-bold">\${product.official_price ? product.official_price.toLocaleString() + '원' : ''}</p>
+                    </div>
+                  \`;
+                });
+                html += '</div>';
+              }
+              
+              if ((!data.brands || data.brands.length === 0) && (!data.products || data.products.length === 0)) {
+                const noResultsText = typeof t === 'function' ? t('no_results') : '검색 결과가 없습니다';
+                html = '<p class="text-center text-gray-600">' + noResultsText + '</p>';
+              }
+              
+              contentDiv.innerHTML = html;
+              resultsDiv.classList.remove('hidden');
+              resultsDiv.scrollIntoView({ behavior: 'smooth' });
+              
+              console.log('검색 결과 표시 완료');
+            } catch (error) {
+              console.error('검색 결과 표시 오류:', error);
             }
-            
-            if (data.products.length > 0) {
-              html += '<h3 class="text-xl font-bold mb-4">' + t('brand_products') + '</h3>';
-              html += '<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">';
-              data.products.forEach(product => {
-                html += \`
-                  <div class="bg-white rounded-lg p-6 shadow card-hover cursor-pointer" onclick="location.href='/product/\${product.id}'">
-                    <h4 class="font-bold text-lg mb-2">\${product.brand_name}</h4>
-                    <p class="text-gray-800 mb-2">\${product.model_name}</p>
-                    <p class="text-purple-600 font-bold">\${product.official_price ? product.official_price.toLocaleString() + ' ' + (currentLang === 'en' ? 'USD' : currentLang === 'zh' ? '元' : currentLang === 'ja' ? '円' : currentLang === 'vi' ? 'VND' : currentLang === 'mn' ? '₮' : currentLang === 'ru' ? '₽' : '원') : t('official_price')}</p>
-                  </div>
-                \`;
-              });
-              html += '</div>';
-            }
-            
-            if (data.brands.length === 0 && data.products.length === 0) {
-              html = '<p class="text-center text-gray-600">' + t('no_results') + '</p>';
-            }
-            
-            contentDiv.innerHTML = html;
-            resultsDiv.classList.remove('hidden');
-            resultsDiv.scrollIntoView({ behavior: 'smooth' });
           }
-          
-          // 엔터키로 검색
-          document.getElementById('searchInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') searchProducts();
-          });
           
           // 인기 브랜드 로드
           async function loadPopularBrands() {
+            console.log('인기 브랜드 로드 시작');
             try {
               const response = await axios.get('/api/brands/top/popular');
-              const brands = response.data.data;
+              console.log('인기 브랜드 데이터:', response.data);
+              const brands = response.data.data || [];
               
-              const productsText = typeof t === 'function' ? t('products_count') : 'products';
+              const productsText = typeof t === 'function' ? t('products_count') : '개 제품';
               
               const html = brands.map(brand => \`
                 <div class="bg-gradient-to-br from-purple-500 to-pink-500 text-white rounded-xl p-6 shadow-lg card-hover cursor-pointer transition-all" onclick="location.href='/brand/\${brand.id}'">
                   <h3 class="font-bold text-lg mb-2">\${brand.name}</h3>
-                  <p class="text-sm opacity-90">\${brand.category}</p>
+                  <p class="text-sm opacity-90">\${brand.category || ''}</p>
                   <p class="text-xs mt-2 opacity-75">\${brand.product_count || 0} \${productsText}</p>
                 </div>
               \`).join('');
               
-              document.getElementById('popularBrands').innerHTML = html;
+              const container = document.getElementById('popularBrands');
+              if (container) {
+                container.innerHTML = html;
+                console.log('인기 브랜드 표시 완료');
+              }
             } catch (error) {
-              console.error('Error loading brands:', error);
+              console.error('인기 브랜드 로드 오류:', error);
             }
           }
           
           // 최저가 상품 로드
           async function loadBestDeals() {
+            console.log('최저가 상품 로드 시작');
             try {
               const response = await axios.get('/api/products/deals/best');
-              const products = response.data.data;
+              console.log('최저가 상품 데이터:', response.data);
+              const products = response.data.data || [];
               
-              const saveText = typeof t === 'function' ? t('save_amount') : 'saved';
+              const saveText = typeof t === 'function' ? t('save_amount') : '절약';
               
               const html = products.map(product => \`
                 <div class="bg-white rounded-xl p-6 shadow-lg card-hover cursor-pointer transition-all" onclick="location.href='/product/\${product.id}'">
                   <div class="flex justify-between items-start mb-3">
                     <div>
-                      <h3 class="font-bold text-lg">\${product.brand_name}</h3>
-                      <p class="text-gray-600">\${product.model_name}</p>
+                      <h3 class="font-bold text-lg">\${product.brand_name || ''}</h3>
+                      <p class="text-gray-600">\${product.model_name || ''}</p>
                     </div>
                     <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">
-                      -\${product.discount_rate}%
+                      -\${product.discount_rate || 0}%
                     </span>
                   </div>
                   <div class="border-t pt-3">
-                    <p class="text-sm text-gray-500 line-through">\${product.official_price.toLocaleString()}</p>
-                    <p class="text-2xl font-bold text-purple-600">\${product.lowest_price.toLocaleString()}</p>
+                    <p class="text-sm text-gray-500 line-through">\${(product.official_price || 0).toLocaleString()}원</p>
+                    <p class="text-2xl font-bold text-purple-600">\${(product.lowest_price || 0).toLocaleString()}원</p>
                     <p class="text-sm text-green-600 mt-2">
                       <i class="fas fa-check-circle mr-1"></i>
-                      \${(product.official_price - product.lowest_price).toLocaleString()} \${saveText}
+                      \${((product.official_price || 0) - (product.lowest_price || 0)).toLocaleString()} \${saveText}
                     </p>
                   </div>
                 </div>
               \`).join('');
               
-              document.getElementById('bestDeals').innerHTML = html;
+              const container = document.getElementById('bestDeals');
+              if (container) {
+                container.innerHTML = html;
+                console.log('최저가 상품 표시 완료');
+              }
             } catch (error) {
-              console.error('Error loading best deals:', error);
+              console.error('최저가 상품 로드 오류:', error);
             }
           }
           
           // 페이지 로드 시 실행
           document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM Content Loaded');
+            console.log('=== DOM 로드 완료 ===');
             
-            // i18n.js를 로드한 후 초기화
-            loadScript('/static/i18n.js', function() {
-              console.log('i18n.js loaded');
-              
+            try {
+              // 번역 함수 확인
               if (typeof t !== 'function') {
-                console.error('Translation function not available after loading i18n.js');
-                window.t = function(key) { 
-                  console.warn('Fallback t() called with key:', key);
-                  return key; 
-                };
-                window.getLangSelectorHTML = function() { 
-                  console.warn('Fallback getLangSelectorHTML() called');
-                  return '<div>Language selector not available</div>'; 
-                };
+                console.error('번역 함수가 로드되지 않았습니다');
+                return;
               }
               
-              try {
-                applyTranslations();
-                loadPopularBrands();
-                loadBestDeals();
-                window.appInitialized = true;
-                console.log('App initialized successfully');
-              } catch (error) {
-                console.error('Error during initialization:', error);
+              console.log('번역 함수 사용 가능');
+              
+              // 다국어 적용
+              applyTranslations();
+              
+              // 데이터 로드
+              loadPopularBrands();
+              loadBestDeals();
+              
+              // 엔터키로 검색
+              const searchInput = document.getElementById('searchInput');
+              if (searchInput) {
+                searchInput.addEventListener('keypress', function(e) {
+                  if (e.key === 'Enter') {
+                    searchProducts();
+                  }
+                });
+                console.log('검색 입력란 이벤트 등록 완료');
               }
-            });
+              
+              console.log('=== 앱 초기화 완료 ===');
+            } catch (error) {
+              console.error('초기화 오류:', error);
+            }
           });
         </script>
     </body>
