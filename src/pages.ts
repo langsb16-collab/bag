@@ -20,34 +20,55 @@ export function getMainPageHTML() {
           .animate-fade-in { animation: fadeIn 0.6s ease-in; }
           @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
           
-          /* 언어 선택 버튼 강조 */
+          /* 언어 선택 버튼 - 모던하고 세련되게 */
           .lang-btn {
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.4);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 1);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 700;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+            color: #667eea;
+            font-size: 15px;
           }
           .lang-btn:hover {
-            background: rgba(255, 255, 255, 0.35);
-            border-color: rgba(255, 255, 255, 0.6);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.95));
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 1) inset;
+            transform: translateY(-2px);
+          }
+          .lang-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
           }
           .lang-menu {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            max-height: 300px;
+            background: linear-gradient(180deg, #ffffff 0%, #f8f9ff 100%);
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            border-radius: 16px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);
+            max-height: 320px;
             overflow-y: auto;
+            overflow-x: hidden;
           }
           .lang-option {
-            padding: 10px 16px;
+            padding: 12px 18px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.25s ease;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.08);
+            display: flex;
+            align-items: center;
+          }
+          .lang-option:last-child {
+            border-bottom: none;
           }
           .lang-option:hover {
-            background: #f3f4f6;
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.12), rgba(118, 75, 162, 0.08));
+            padding-left: 22px;
+          }
+          .lang-option.active {
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.18), rgba(118, 75, 162, 0.12));
+            font-weight: 600;
+            color: #667eea;
           }
         </style>
     </head>
@@ -56,8 +77,8 @@ export function getMainPageHTML() {
         <div class="gradient-bg text-white">
             <div class="container mx-auto px-4 py-4">
                 <!-- Language Selector -->
-                <div class="flex justify-end mb-2">
-                    <div id="langSelector"></div>
+                <div class="flex justify-end items-center mb-3">
+                    <div id="langSelector" class="relative z-50"></div>
                 </div>
                 
                 <div class="text-center animate-fade-in py-4">

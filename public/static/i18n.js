@@ -631,19 +631,19 @@ function getLangSelectorHTML() {
   
   return `
     <div class="relative inline-block">
-      <button id="langBtn" class="lang-btn flex items-center gap-2 text-white transition-all">
-        <i class="fas fa-globe text-lg"></i>
-        <span class="text-base font-semibold">${currentLangData.flag} ${currentLangData.name}</span>
+      <button id="langBtn" class="lang-btn flex items-center gap-2 transition-all">
+        <i class="fas fa-globe"></i>
+        <span class="font-bold">${currentLangData.flag} ${currentLangData.name}</span>
         <i class="fas fa-chevron-down text-xs"></i>
       </button>
-      <div id="langMenu" class="lang-menu hidden absolute right-0 mt-2 w-44 z-50">
+      <div id="langMenu" class="lang-menu hidden absolute right-0 mt-3 w-48">
         ${langs.map(lang => `
           <button 
             onclick="changeLang('${lang.code}')" 
-            class="lang-option w-full flex items-center gap-2 ${lang.code === currentLang ? 'bg-purple-50 font-semibold' : ''}">
-            <span class="text-lg">${lang.flag}</span>
+            class="lang-option w-full ${lang.code === currentLang ? 'active' : ''}">
+            <span class="text-xl mr-2">${lang.flag}</span>
             <span class="text-sm">${lang.name}</span>
-            ${lang.code === currentLang ? '<i class="fas fa-check text-purple-600 ml-auto text-xs"></i>' : ''}
+            ${lang.code === currentLang ? '<i class="fas fa-check text-purple-600 ml-auto text-sm"></i>' : '<span class="ml-auto"></span>'}
           </button>
         `).join('')}
       </div>
