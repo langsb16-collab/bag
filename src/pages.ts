@@ -232,12 +232,13 @@ export function getMainPageHTML() {
           };
 
           // 페이지 초기화
-          document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 페이지 로드 시작');
+          function initApp() {
+            console.log('🚀 앱 초기화 시작');
             
             // 번역 함수 확인
             if (typeof window.t !== 'function') {
-              console.error('❌ 번역 함수 없음');
+              console.log('⏳ 번역 함수 대기중...');
+              setTimeout(initApp, 50);
               return;
             }
             
@@ -299,7 +300,14 @@ export function getMainPageHTML() {
             loadBestDeals();
             
             console.log('✅ 초기화 완료');
-          });
+          }
+          
+          // DOMContentLoaded에서 initApp 실행
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initApp);
+          } else {
+            initApp();
+          }
           
           // 인기 브랜드 로드
           async function loadPopularBrands() {
