@@ -218,11 +218,17 @@ export function getMainPageHTML() {
 
         <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
         <script>
+          // 전역 변수 초기화
+          window.appInitialized = false;
+          
           // i18n.js를 동적으로 로드하고 콜백 실행
           function loadScript(src, callback) {
             const script = document.createElement('script');
             script.src = src;
-            script.onload = callback;
+            script.onload = function() {
+              console.log('Script loaded:', src);
+              if (callback) callback();
+            };
             script.onerror = function() {
               console.error('Failed to load script:', src);
             };
@@ -231,12 +237,13 @@ export function getMainPageHTML() {
           
           // 다국어 텍스트 적용
           function applyTranslations() {
-            if (typeof t !== 'function') {
-              console.error('Translation function not loaded');
-              return;
-            }
-            
-            document.getElementById('hero-title').textContent = t('hero_title');
+            try {
+              if (typeof t !== 'function') {
+                console.error('Translation function not loaded');
+                return;
+              }
+              
+              document.getElementById('hero-title').textContent = t('hero_title');
             document.getElementById('hero-subtitle').textContent = t('hero_subtitle');
             document.getElementById('hero-description').textContent = t('hero_description');
             document.getElementById('searchInput').placeholder = t('search_placeholder');
@@ -268,36 +275,42 @@ export function getMainPageHTML() {
             document.getElementById('footer-copyright').textContent = t('footer_copyright');
             document.getElementById('footer-tagline').textContent = t('footer_tagline');
             
-            // 언어 선택기 추가 (안전하게)
-            if (typeof getLangSelectorHTML === 'function') {
-              document.getElementById('langSelector').innerHTML = getLangSelectorHTML();
-              
-              // 언어 선택기 이벤트 초기화
-              if (typeof initLangSelector === 'function') {
-                initLangSelector();
+              // 언어 선택기 추가 (안전하게)
+              if (typeof getLangSelectorHTML === 'function') {
+                document.getElementById('langSelector').innerHTML = getLangSelectorHTML();
+                
+                // 언어 선택기 이벤트 초기화
+                if (typeof initLangSelector === 'function') {
+                  initLangSelector();
+                }
+              } else {
+                console.error('getLangSelectorHTML function not found');
               }
-            } else {
-              console.error('getLangSelectorHTML function not found');
+            } catch (error) {
+              console.error('Error in applyTranslations:', error);
             }
           }
           
           // 검색 기능
           async function searchProducts() {
-            const keyword = document.getElementById('searchInput').value.trim();
-            if (!keyword) {
-              const msg = typeof t === 'function' ? t('enter_keyword') : 'Please enter a keyword';
-              alert(msg);
-              return;
-            }
-            
             try {
+              const keyword = document.getElementById('searchInput').value.trim();
+              if (!keyword) {
+                const msg = typeof t === 'function' ? t('enter_keyword') : 'Please enter a keyword';
+                alert(msg);
+                return;
+              }
+              
               const response = await axios.get('/api/search?q=' + encodeURIComponent(keyword));
               displaySearchResults(response.data.data);
             } catch (error) {
-              console.error('검색 오류:', error);
-              alert('검색 중 오류가 발생했습니다');
+              console.error('Search error:', error);
+              alert('An error occurred during search');
             }
           }
+          
+          // 전역 스코프에 함수 노출
+          window.searchProducts = searchProducts;
           
           // 검색 결과 표시
           function displaySearchResults(data) {
@@ -356,17 +369,19 @@ export function getMainPageHTML() {
               const response = await axios.get('/api/brands/top/popular');
               const brands = response.data.data;
               
+              const productsText = typeof t === 'function' ? t('products_count') : 'products';
+              
               const html = brands.map(brand => \`
                 <div class="bg-gradient-to-br from-purple-500 to-pink-500 text-white rounded-xl p-6 shadow-lg card-hover cursor-pointer transition-all" onclick="location.href='/brand/\${brand.id}'">
                   <h3 class="font-bold text-lg mb-2">\${brand.name}</h3>
                   <p class="text-sm opacity-90">\${brand.category}</p>
-                  <p class="text-xs mt-2 opacity-75">\${brand.product_count || 0} \${typeof t === 'function' ? t('products_count') : 'products'}</p>
+                  <p class="text-xs mt-2 opacity-75">\${brand.product_count || 0} \${productsText}</p>
                 </div>
               \`).join('');
               
               document.getElementById('popularBrands').innerHTML = html;
             } catch (error) {
-              console.error('브랜드 로드 오류:', error);
+              console.error('Error loading brands:', error);
             }
           }
           
@@ -375,6 +390,8 @@ export function getMainPageHTML() {
             try {
               const response = await axios.get('/api/products/deals/best');
               const products = response.data.data;
+              
+              const saveText = typeof t === 'function' ? t('save_amount') : 'saved';
               
               const html = products.map(product => \`
                 <div class="bg-white rounded-xl p-6 shadow-lg card-hover cursor-pointer transition-all" onclick="location.href='/product/\${product.id}'">
@@ -392,7 +409,7 @@ export function getMainPageHTML() {
                     <p class="text-2xl font-bold text-purple-600">\${product.lowest_price.toLocaleString()}</p>
                     <p class="text-sm text-green-600 mt-2">
                       <i class="fas fa-check-circle mr-1"></i>
-                      \${(product.official_price - product.lowest_price).toLocaleString()} \${typeof t === 'function' ? t('save_amount') : 'saved'}
+                      \${(product.official_price - product.lowest_price).toLocaleString()} \${saveText}
                     </p>
                   </div>
                 </div>
@@ -400,23 +417,39 @@ export function getMainPageHTML() {
               
               document.getElementById('bestDeals').innerHTML = html;
             } catch (error) {
-              console.error('최저가 로드 오류:', error);
+              console.error('Error loading best deals:', error);
             }
           }
           
           // 페이지 로드 시 실행
           document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM Content Loaded');
+            
             // i18n.js를 로드한 후 초기화
             loadScript('/static/i18n.js', function() {
+              console.log('i18n.js loaded');
+              
               if (typeof t !== 'function') {
                 console.error('Translation function not available after loading i18n.js');
-                window.t = function(key) { return key; };
-                window.getLangSelectorHTML = function() { return ''; };
+                window.t = function(key) { 
+                  console.warn('Fallback t() called with key:', key);
+                  return key; 
+                };
+                window.getLangSelectorHTML = function() { 
+                  console.warn('Fallback getLangSelectorHTML() called');
+                  return '<div>Language selector not available</div>'; 
+                };
               }
               
-              applyTranslations();
-              loadPopularBrands();
-              loadBestDeals();
+              try {
+                applyTranslations();
+                loadPopularBrands();
+                loadBestDeals();
+                window.appInitialized = true;
+                console.log('App initialized successfully');
+              } catch (error) {
+                console.error('Error during initialization:', error);
+              }
             });
           });
         </script>
