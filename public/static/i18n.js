@@ -621,6 +621,24 @@ function changeLang(lang) {
 // 전역 스코프에 명시적으로 등록
 window.changeLang = changeLang;
 
+// 드롭다운 토글 함수 (전역)
+window.toggleLangMenu = function() {
+  console.log('🖱️ toggleLangMenu 호출됨');
+  const langMenu = document.getElementById('langMenu');
+  if (langMenu) {
+    const isShowing = langMenu.classList.contains('show');
+    if (isShowing) {
+      langMenu.classList.remove('show');
+      console.log('✅ 메뉴 닫힘');
+    } else {
+      langMenu.classList.add('show');
+      console.log('✅ 메뉴 열림');
+    }
+  } else {
+    console.error('❌ langMenu 요소를 찾을 수 없습니다');
+  }
+};
+
 // 언어 선택기 HTML
 function getLangSelectorHTML() {
   const langs = [
@@ -637,7 +655,7 @@ function getLangSelectorHTML() {
   
   return `
     <div class="lang-container">
-      <button id="langBtn" class="lang-btn" type="button">
+      <button id="langBtn" class="lang-btn" type="button" onclick="window.toggleLangMenu(); return false;">
         <i class="fas fa-globe"></i>
         <span class="font-bold">${currentLangData.flag} ${currentLangData.name}</span>
         <i class="fas fa-chevron-down text-xs"></i>
@@ -646,7 +664,7 @@ function getLangSelectorHTML() {
         ${langs.map(lang => `
           <button 
             type="button"
-            onclick="changeLang('${lang.code}')" 
+            onclick="window.changeLang('${lang.code}'); return false;" 
             class="lang-option ${lang.code === currentLang ? 'active' : ''}">
             <span class="text-xl mr-2">${lang.flag}</span>
             <span class="text-sm">${lang.name}</span>
@@ -658,62 +676,41 @@ function getLangSelectorHTML() {
   `;
 }
 
-// 언어 선택기 초기화 함수
+// 언어 선택기 초기화 함수 (외부 클릭 처리만)
 function initLangSelector() {
   console.log('=== 언어 선택기 초기화 시작 ===');
   
-  // 약간의 지연 후 요소 찾기 (DOM이 완전히 렌더링된 후)
   setTimeout(function() {
-    const langBtn = document.getElementById('langBtn');
     const langMenu = document.getElementById('langMenu');
+    const langBtn = document.getElementById('langBtn');
     
-    if (!langBtn) {
-      console.error('❌ 언어 버튼을 찾을 수 없습니다');
-      console.log('현재 DOM:', document.getElementById('langSelector')?.innerHTML);
-      return false;
+    if (!langMenu || !langBtn) {
+      console.error('❌ 언어 선택기 요소를 찾을 수 없습니다');
+      return;
     }
     
-    if (!langMenu) {
-      console.error('❌ 언어 메뉴를 찾을 수 없습니다');
-      return false;
-    }
+    console.log('✅ 언어 선택기 요소 발견');
     
-    console.log('✅ 언어 버튼 발견');
-    console.log('✅ 언어 메뉴 발견');
-    
-    // 직접 onclick 방식으로 변경 (더 확실함)
-    langBtn.onclick = function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      
-      console.log('🖱️ 언어 버튼 클릭됨!');
-      
-      const isShowing = langMenu.classList.contains('show');
-      if (isShowing) {
-        langMenu.classList.remove('show');
-        console.log('✅ 언어 메뉴 닫힘');
-      } else {
-        langMenu.classList.add('show');
-        console.log('✅ 언어 메뉴 열림');
-      }
-      
-      return false;
-    };
-    
-    // 메뉴 외부 클릭 시 닫기
-    document.onclick = function(e) {
+    // 외부 클릭 시 메뉴 닫기
+    document.addEventListener('click', function(e) {
       if (!langBtn.contains(e.target) && !langMenu.contains(e.target)) {
         if (langMenu.classList.contains('show')) {
           langMenu.classList.remove('show');
-          console.log('메뉴 외부 클릭으로 닫힘');
+          console.log('✅ 외부 클릭으로 메뉴 닫힘');
         }
       }
-    };
+    });
     
-    console.log('=== 언어 선택기 초기화 완료 ===');
-  }, 200);
-  
-  return true;
+    // ESC 키로 메뉴 닫기
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && langMenu.classList.contains('show')) {
+        langMenu.classList.remove('show');
+        console.log('✅ ESC 키로 메뉴 닫힘');
+      }
+    });
+    
+    console.log('✅ 언어 선택기 초기화 완료 (HTML onclick 사용)');
+  }, 100);
 }
 
 // 전역에 명시적으로 노출
