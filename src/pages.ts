@@ -217,15 +217,16 @@ export function getMainPageHTML() {
         </footer>
 
         <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
-        <script src="/static/i18n.js"></script>
         <script>
-          // 안전한 번역 함수 wrapper
-          function safeT(key) {
-            if (typeof t === 'function') {
-              return t(key);
-            }
-            console.warn('Translation function not loaded yet for key:', key);
-            return key;
+          // i18n.js를 동적으로 로드하고 콜백 실행
+          function loadScript(src, callback) {
+            const script = document.createElement('script');
+            script.src = src;
+            script.onload = callback;
+            script.onerror = function() {
+              console.error('Failed to load script:', src);
+            };
+            document.head.appendChild(script);
           }
           
           // 다국어 텍스트 적용
@@ -267,8 +268,12 @@ export function getMainPageHTML() {
             document.getElementById('footer-copyright').textContent = t('footer_copyright');
             document.getElementById('footer-tagline').textContent = t('footer_tagline');
             
-            // 언어 선택기 추가
-            document.getElementById('langSelector').innerHTML = getLangSelectorHTML();
+            // 언어 선택기 추가 (안전하게)
+            if (typeof getLangSelectorHTML === 'function') {
+              document.getElementById('langSelector').innerHTML = getLangSelectorHTML();
+            } else {
+              console.error('getLangSelectorHTML function not found');
+            }
           }
           
           // 검색 기능
@@ -396,16 +401,18 @@ export function getMainPageHTML() {
           
           // 페이지 로드 시 실행
           document.addEventListener('DOMContentLoaded', function() {
-            // i18n.js가 로드될 때까지 기다림
-            if (typeof t !== 'function') {
-              console.error('Translation function not available');
-              // 기본 영어로 폴백
-              window.t = function(key) { return key; };
-            }
-            
-            applyTranslations();
-            loadPopularBrands();
-            loadBestDeals();
+            // i18n.js를 로드한 후 초기화
+            loadScript('/static/i18n.js', function() {
+              if (typeof t !== 'function') {
+                console.error('Translation function not available after loading i18n.js');
+                window.t = function(key) { return key; };
+                window.getLangSelectorHTML = function() { return ''; };
+              }
+              
+              applyTranslations();
+              loadPopularBrands();
+              loadBestDeals();
+            });
           });
         </script>
     </body>
