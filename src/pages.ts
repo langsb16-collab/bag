@@ -30,34 +30,34 @@ export function getMainPageHTML() {
           }
           .lang-btn {
             background: #667eea;
-            border: 2px solid #ffffff;
-            padding: 6px 12px;
-            border-radius: 12px;
-            font-weight: 700;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            border: 1px solid #ffffff;
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
             color: #ffffff;
-            font-size: 13px;
+            font-size: 11px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 6px;
-            transition: all 0.3s ease;
-            min-width: 100px;
+            gap: 4px;
+            transition: all 0.2s ease;
+            min-width: 70px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
           }
           .lang-btn:hover {
             background: #7c8ef5;
-            transform: translateY(-2px);
           }
           .lang-menu {
             position: absolute;
-            top: calc(100% + 8px);
+            top: calc(100% + 5px);
             right: 0;
             background: #ffffff;
-            border: 2px solid #667eea;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-            max-height: 280px;
-            min-width: 140px;
+            border: 1px solid #667eea;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            max-height: 200px;
+            min-width: 100px;
             overflow-y: auto;
             z-index: 10000;
             display: none;
@@ -66,31 +66,34 @@ export function getMainPageHTML() {
             display: block;
           }
           .lang-option {
-            padding: 10px 14px;
+            padding: 6px 10px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            border-bottom: 1px solid #f0f0f0;
+            transition: all 0.15s ease;
+            border-bottom: 1px solid #f5f5f5;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             background: transparent;
             border-left: none;
             border-right: none;
             border-top: none;
             width: 100%;
             text-align: left;
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 500;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: #1a202c;
           }
           .lang-option:last-child {
             border-bottom: none;
           }
           .lang-option:hover {
             background: #f5f7ff;
+            color: #667eea;
           }
           .lang-option.active {
             background: #e8ebff;
-            font-weight: 700;
+            font-weight: 600;
             color: #667eea;
           }
         </style>

@@ -244,9 +244,9 @@ function getLangSelectorHTML() {
   return `
     <div class="lang-container">
       <button id="langBtn" class="lang-btn" type="button" onclick="window.toggleLangMenu(); return false;">
-        <span style="font-size: 16px;">${currentLangData.flag}</span>
-        <span style="font-size: 13px; font-weight: 700;">${currentLangData.name}</span>
-        <i class="fas fa-chevron-down" style="font-size: 10px;"></i>
+        <span style="font-size: 13px;">${currentLangData.flag}</span>
+        <span style="font-size: 11px; font-weight: 600;">${currentLangData.name}</span>
+        <i class="fas fa-chevron-down" style="font-size: 8px;"></i>
       </button>
       <div id="langMenu" class="lang-menu">
         ${languages.map(lang => `
@@ -254,9 +254,9 @@ function getLangSelectorHTML() {
             type="button"
             onclick="window.changeLang('${lang.code}'); return false;" 
             class="lang-option ${lang.code === currentLang ? 'active' : ''}">
-            <span style="font-size: 18px;">${lang.flag}</span>
-            <span style="font-size: 13px; font-weight: 500; flex: 1;">${lang.name}</span>
-            ${lang.code === currentLang ? '<i class="fas fa-check" style="color: #667eea; font-size: 12px;"></i>' : ''}
+            <span style="font-size: 14px;">${lang.flag}</span>
+            <span style="font-size: 11px; font-weight: 500; flex: 1;">${lang.name}</span>
+            ${lang.code === currentLang ? '<i class="fas fa-check" style="color: #667eea; font-size: 10px;"></i>' : ''}
           </button>
         `).join('')}
       </div>
