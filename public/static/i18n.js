@@ -662,61 +662,59 @@ function getLangSelectorHTML() {
 function initLangSelector() {
   console.log('=== 언어 선택기 초기화 시작 ===');
   
-  const langBtn = document.getElementById('langBtn');
-  const langMenu = document.getElementById('langMenu');
-  
-  if (!langBtn) {
-    console.error('❌ 언어 버튼을 찾을 수 없습니다');
-    return false;
-  }
-  
-  if (!langMenu) {
-    console.error('❌ 언어 메뉴를 찾을 수 없습니다');
-    return false;
-  }
-  
-  console.log('✅ 언어 버튼 발견:', langBtn);
-  console.log('✅ 언어 메뉴 발견:', langMenu);
-  
-  // 이전 이벤트 리스너 제거 (중복 방지)
-  const newLangBtn = langBtn.cloneNode(true);
-  langBtn.parentNode.replaceChild(newLangBtn, langBtn);
-  
-  // 새 버튼에 클릭 이벤트 등록
-  newLangBtn.addEventListener('click', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
+  // 약간의 지연 후 요소 찾기 (DOM이 완전히 렌더링된 후)
+  setTimeout(function() {
+    const langBtn = document.getElementById('langBtn');
+    const langMenu = document.getElementById('langMenu');
     
-    console.log('🖱️ 언어 버튼 클릭됨');
-    
-    const isShowing = langMenu.classList.contains('show');
-    if (isShowing) {
-      langMenu.classList.remove('show');
-      console.log('언어 메뉴 닫힘');
-    } else {
-      langMenu.classList.add('show');
-      console.log('언어 메뉴 열림');
+    if (!langBtn) {
+      console.error('❌ 언어 버튼을 찾을 수 없습니다');
+      console.log('현재 DOM:', document.getElementById('langSelector')?.innerHTML);
+      return false;
     }
-  });
-  
-  // 메뉴 외부 클릭 시 닫기
-  document.addEventListener('click', function(e) {
-    if (!newLangBtn.contains(e.target) && !langMenu.contains(e.target)) {
-      if (langMenu.classList.contains('show')) {
+    
+    if (!langMenu) {
+      console.error('❌ 언어 메뉴를 찾을 수 없습니다');
+      return false;
+    }
+    
+    console.log('✅ 언어 버튼 발견');
+    console.log('✅ 언어 메뉴 발견');
+    
+    // 직접 onclick 방식으로 변경 (더 확실함)
+    langBtn.onclick = function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      console.log('🖱️ 언어 버튼 클릭됨!');
+      
+      const isShowing = langMenu.classList.contains('show');
+      if (isShowing) {
         langMenu.classList.remove('show');
-        console.log('메뉴 외부 클릭으로 닫힘');
+        console.log('✅ 언어 메뉴 닫힘');
+      } else {
+        langMenu.classList.add('show');
+        console.log('✅ 언어 메뉴 열림');
       }
-    }
-  });
+      
+      return false;
+    };
+    
+    // 메뉴 외부 클릭 시 닫기
+    document.onclick = function(e) {
+      if (!langBtn.contains(e.target) && !langMenu.contains(e.target)) {
+        if (langMenu.classList.contains('show')) {
+          langMenu.classList.remove('show');
+          console.log('메뉴 외부 클릭으로 닫힘');
+        }
+      }
+    };
+    
+    console.log('=== 언어 선택기 초기화 완료 ===');
+  }, 200);
   
-  // ESC 키로 닫기
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && langMenu.classList.contains('show')) {
-      langMenu.classList.remove('show');
-      console.log('ESC 키로 메뉴 닫힘');
-    }
-  });
-  
-  console.log('=== 언어 선택기 초기화 완료 ===');
   return true;
 }
+
+// 전역에 명시적으로 노출
+window.initLangSelector = initLangSelector;
