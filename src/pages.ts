@@ -238,7 +238,7 @@ export function getMainPageHTML() {
         </footer>
 
         <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
-        <script src="/static/i18n.js"></script>
+        <script src="/static/i18n.js?v=2025121301"></script>
         <script>
           console.log('=== 메인 스크립트 로드 시작 ===');
           
