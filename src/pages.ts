@@ -29,62 +29,86 @@ export function getMainPageHTML() {
             z-index: 9999;
           }
           .lang-btn {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.95));
             backdrop-filter: blur(20px);
-            border: 2px solid rgba(255, 255, 255, 1);
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-weight: 700;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            border: 3px solid rgba(255, 255, 255, 1);
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-weight: 800;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.35);
             color: #667eea;
-            font-size: 15px;
+            font-size: 18px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
             transition: all 0.3s ease;
+            min-width: 200px;
+            justify-content: space-between;
           }
           .lang-btn:hover {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.95));
-            transform: translateY(-2px);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 1));
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
           }
           .lang-menu {
             position: absolute;
-            top: calc(100% + 12px);
+            top: calc(100% + 15px);
             right: 0;
-            background: linear-gradient(180deg, #ffffff 0%, #f8f9ff 100%);
-            border: 2px solid rgba(102, 126, 234, 0.2);
-            border-radius: 16px;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);
-            max-height: 320px;
-            min-width: 200px;
+            background: #ffffff;
+            border: 3px solid rgba(102, 126, 234, 0.3);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-height: 450px;
+            min-width: 280px;
             overflow-y: auto;
             z-index: 10000;
             display: none;
           }
           .lang-menu.show {
             display: block;
+            animation: slideDown 0.3s ease;
+          }
+          @keyframes slideDown {
+            from {
+              opacity: 0;
+              transform: translateY(-10px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
           }
           .lang-option {
-            padding: 12px 18px;
+            padding: 18px 24px;
             cursor: pointer;
             transition: all 0.25s ease;
-            border-bottom: 1px solid rgba(102, 126, 234, 0.08);
+            border-bottom: 2px solid rgba(102, 126, 234, 0.1);
             display: flex;
             align-items: center;
+            gap: 16px;
             background: transparent;
-            border: none;
+            border-left: none;
+            border-right: none;
+            border-top: none;
             width: 100%;
             text-align: left;
+            font-size: 17px;
+            font-weight: 600;
+          }
+          .lang-option:last-child {
+            border-bottom: none;
           }
           .lang-option:hover {
-            background: linear-gradient(90deg, rgba(102, 126, 234, 0.12), rgba(118, 75, 162, 0.08));
-            padding-left: 22px;
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.12));
+            padding-left: 30px;
+            transform: translateX(5px);
           }
           .lang-option.active {
-            background: linear-gradient(90deg, rgba(102, 126, 234, 0.18), rgba(118, 75, 162, 0.12));
-            font-weight: 600;
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.25), rgba(118, 75, 162, 0.18));
+            font-weight: 800;
             color: #667eea;
+            border-left: 5px solid #667eea;
           }
         </style>
     </head>
