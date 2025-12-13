@@ -19,24 +19,54 @@ export function getMainPageHTML() {
           .transition-all { transition: all 0.3s ease; }
           .animate-fade-in { animation: fadeIn 0.6s ease-in; }
           @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+          
+          /* 언어 선택 버튼 강조 */
+          .lang-btn {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+          }
+          .lang-btn:hover {
+            background: rgba(255, 255, 255, 0.35);
+            border-color: rgba(255, 255, 255, 0.6);
+          }
+          .lang-menu {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            max-height: 300px;
+            overflow-y: auto;
+          }
+          .lang-option {
+            padding: 10px 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+          }
+          .lang-option:hover {
+            background: #f3f4f6;
+          }
         </style>
     </head>
     <body class="bg-gray-50">
         <!-- Hero Section -->
         <div class="gradient-bg text-white">
-            <div class="container mx-auto px-4 py-8">
+            <div class="container mx-auto px-4 py-4">
                 <!-- Language Selector -->
-                <div class="flex justify-end mb-4">
+                <div class="flex justify-end mb-2">
                     <div id="langSelector"></div>
                 </div>
                 
-                <div class="text-center animate-fade-in py-8 md:py-16">
-                    <h1 class="text-4xl md:text-6xl font-bold mb-6">
-                        <i class="fas fa-gem mr-3"></i>
+                <div class="text-center animate-fade-in py-4">
+                    <h1 class="text-xl md:text-3xl font-bold mb-3">
+                        <i class="fas fa-gem mr-2 text-lg md:text-2xl"></i>
                         <span id="hero-title"></span>
                     </h1>
-                    <p class="text-xl md:text-2xl mb-8 opacity-90" id="hero-subtitle"></p>
-                    <p class="text-lg md:text-xl mb-10 opacity-80" id="hero-description"></p>
+                    <p class="text-sm md:text-base mb-3 opacity-90" id="hero-subtitle"></p>
+                    <p class="text-xs md:text-sm mb-4 opacity-80" id="hero-description"></p>
                     
                     <!-- Search Bar -->
                     <div class="max-w-3xl mx-auto">
@@ -45,34 +75,34 @@ export function getMainPageHTML() {
                                 type="text" 
                                 id="searchInput"
                                 placeholder=""
-                                class="w-full px-6 py-5 pr-16 rounded-full text-gray-800 text-lg focus:outline-none focus:ring-4 focus:ring-purple-300 shadow-2xl"
+                                class="w-full px-4 py-3 pr-28 rounded-full text-gray-800 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-purple-300 shadow-lg"
                             >
                             <button 
                                 onclick="searchProducts()"
-                                class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-full transition-all"
+                                class="absolute right-1 top-1/2 transform -translate-y-1/2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-full transition-all text-sm"
                             >
-                                <i class="fas fa-search mr-2"></i><span id="search-btn"></span>
+                                <i class="fas fa-search mr-1"></i><span id="search-btn"></span>
                             </button>
                         </div>
                     </div>
                     
                     <!-- Quick Stats -->
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 max-w-4xl mx-auto">
-                        <div class="glass rounded-lg p-4">
-                            <div class="text-3xl font-bold">200+</div>
-                            <div class="text-sm opacity-80" id="stat-stores"></div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mt-6 max-w-4xl mx-auto">
+                        <div class="glass rounded-lg p-2">
+                            <div class="text-lg md:text-2xl font-bold">200+</div>
+                            <div class="text-xs opacity-80" id="stat-stores"></div>
                         </div>
-                        <div class="glass rounded-lg p-4">
-                            <div class="text-3xl font-bold">10,000+</div>
-                            <div class="text-sm opacity-80" id="stat-products"></div>
+                        <div class="glass rounded-lg p-2">
+                            <div class="text-lg md:text-2xl font-bold">10,000+</div>
+                            <div class="text-xs opacity-80" id="stat-products"></div>
                         </div>
-                        <div class="glass rounded-lg p-4">
-                            <div class="text-3xl font-bold">50,000+</div>
-                            <div class="text-sm opacity-80" id="stat-reviews"></div>
+                        <div class="glass rounded-lg p-2">
+                            <div class="text-lg md:text-2xl font-bold">50,000+</div>
+                            <div class="text-xs opacity-80" id="stat-reviews"></div>
                         </div>
-                        <div class="glass rounded-lg p-4">
-                            <div class="text-3xl font-bold">A~D</div>
-                            <div class="text-sm opacity-80" id="stat-trust"></div>
+                        <div class="glass rounded-lg p-2">
+                            <div class="text-lg md:text-2xl font-bold">A~D</div>
+                            <div class="text-xs opacity-80" id="stat-trust"></div>
                         </div>
                     </div>
                 </div>
@@ -80,72 +110,72 @@ export function getMainPageHTML() {
         </div>
 
         <!-- Features Section -->
-        <div class="container mx-auto px-4 py-16">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">
-                <i class="fas fa-star text-yellow-500 mr-2"></i>
+        <div class="container mx-auto px-4 py-8">
+            <h2 class="text-xl md:text-2xl font-bold text-center mb-6 text-gray-800">
+                <i class="fas fa-star text-yellow-500 mr-1 text-lg"></i>
                 <span id="features-title"></span>
             </h2>
             
-            <div class="grid md:grid-cols-3 gap-8 mb-16">
-                <div class="bg-white rounded-2xl p-8 shadow-lg card-hover transition-all">
-                    <div class="text-5xl mb-4">💰</div>
-                    <h3 class="text-xl font-bold mb-3" id="feature-price-title"></h3>
-                    <p class="text-gray-600" id="feature-price-desc"></p>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div class="bg-white rounded-xl p-4 shadow-md card-hover transition-all">
+                    <div class="text-3xl mb-2">💰</div>
+                    <h3 class="text-sm md:text-base font-bold mb-1" id="feature-price-title"></h3>
+                    <p class="text-xs text-gray-600" id="feature-price-desc"></p>
                 </div>
                 
-                <div class="bg-white rounded-2xl p-8 shadow-lg card-hover transition-all">
-                    <div class="text-5xl mb-4">✅</div>
-                    <h3 class="text-xl font-bold mb-3" id="feature-seller-title"></h3>
-                    <p class="text-gray-600" id="feature-seller-desc"></p>
+                <div class="bg-white rounded-xl p-4 shadow-md card-hover transition-all">
+                    <div class="text-3xl mb-2">✅</div>
+                    <h3 class="text-sm md:text-base font-bold mb-1" id="feature-seller-title"></h3>
+                    <p class="text-xs text-gray-600" id="feature-seller-desc"></p>
                 </div>
                 
-                <div class="bg-white rounded-2xl p-8 shadow-lg card-hover transition-all">
-                    <div class="text-5xl mb-4">📝</div>
-                    <h3 class="text-xl font-bold mb-3" id="feature-review-title"></h3>
-                    <p class="text-gray-600" id="feature-review-desc"></p>
+                <div class="bg-white rounded-xl p-4 shadow-md card-hover transition-all">
+                    <div class="text-3xl mb-2">📝</div>
+                    <h3 class="text-sm md:text-base font-bold mb-1" id="feature-review-title"></h3>
+                    <p class="text-xs text-gray-600" id="feature-review-desc"></p>
                 </div>
                 
-                <div class="bg-white rounded-2xl p-8 shadow-lg card-hover transition-all">
-                    <div class="text-5xl mb-4">🔍</div>
-                    <h3 class="text-xl font-bold mb-3" id="feature-auth-title"></h3>
-                    <p class="text-gray-600" id="feature-auth-desc"></p>
+                <div class="bg-white rounded-xl p-4 shadow-md card-hover transition-all">
+                    <div class="text-3xl mb-2">🔍</div>
+                    <h3 class="text-sm md:text-base font-bold mb-1" id="feature-auth-title"></h3>
+                    <p class="text-xs text-gray-600" id="feature-auth-desc"></p>
                 </div>
                 
-                <div class="bg-white rounded-2xl p-8 shadow-lg card-hover transition-all">
-                    <div class="text-5xl mb-4">📊</div>
-                    <h3 class="text-xl font-bold mb-3" id="feature-trend-title"></h3>
-                    <p class="text-gray-600" id="feature-trend-desc"></p>
+                <div class="bg-white rounded-xl p-4 shadow-md card-hover transition-all">
+                    <div class="text-3xl mb-2">📊</div>
+                    <h3 class="text-sm md:text-base font-bold mb-1" id="feature-trend-title"></h3>
+                    <p class="text-xs text-gray-600" id="feature-trend-desc"></p>
                 </div>
                 
-                <div class="bg-white rounded-2xl p-8 shadow-lg card-hover transition-all">
-                    <div class="text-5xl mb-4">🌍</div>
-                    <h3 class="text-xl font-bold mb-3" id="feature-global-title"></h3>
-                    <p class="text-gray-600" id="feature-global-desc"></p>
+                <div class="bg-white rounded-xl p-4 shadow-md card-hover transition-all">
+                    <div class="text-3xl mb-2">🌍</div>
+                    <h3 class="text-sm md:text-base font-bold mb-1" id="feature-global-title"></h3>
+                    <p class="text-xs text-gray-600" id="feature-global-desc"></p>
                 </div>
             </div>
         </div>
 
         <!-- Popular Brands -->
-        <div class="bg-white py-16">
+        <div class="bg-white py-8">
             <div class="container mx-auto px-4">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">
-                    <i class="fas fa-crown text-yellow-500 mr-2"></i>
+                <h2 class="text-xl md:text-2xl font-bold text-center mb-6 text-gray-800">
+                    <i class="fas fa-crown text-yellow-500 mr-1 text-lg"></i>
                     <span id="popular-brands-title"></span>
                 </h2>
-                <div id="popularBrands" class="grid grid-cols-2 md:grid-cols-5 gap-6">
-                    <div class="animate-pulse bg-gray-200 h-24 rounded-lg"></div>
+                <div id="popularBrands" class="grid grid-cols-2 md:grid-cols-5 gap-3">
+                    <div class="animate-pulse bg-gray-200 h-20 rounded-lg"></div>
                 </div>
             </div>
         </div>
 
         <!-- Best Deals -->
-        <div class="container mx-auto px-4 py-16">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">
-                <i class="fas fa-fire text-red-500 mr-2"></i>
+        <div class="container mx-auto px-4 py-8">
+            <h2 class="text-xl md:text-2xl font-bold text-center mb-6 text-gray-800">
+                <i class="fas fa-fire text-red-500 mr-1 text-lg"></i>
                 <span id="best-deals-title"></span>
             </h2>
-            <div id="bestDeals" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="animate-pulse bg-gray-200 h-64 rounded-lg"></div>
+            <div id="bestDeals" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="animate-pulse bg-gray-200 h-48 rounded-lg"></div>
             </div>
         </div>
 
