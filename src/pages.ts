@@ -29,129 +29,112 @@ export function getMainPageHTML() {
             z-index: 9999;
           }
           .lang-btn {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.95));
-            backdrop-filter: blur(20px);
-            border: 3px solid rgba(255, 255, 255, 1);
-            padding: 14px 28px;
-            border-radius: 30px;
-            font-weight: 800;
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.35);
-            color: #667eea;
-            font-size: 18px;
+            background: #667eea;
+            border: 2px solid #ffffff;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            color: #ffffff;
+            font-size: 13px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 6px;
             transition: all 0.3s ease;
-            min-width: 200px;
-            justify-content: space-between;
+            min-width: 100px;
           }
           .lang-btn:hover {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 1));
-            transform: translateY(-3px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+            background: #7c8ef5;
+            transform: translateY(-2px);
           }
           .lang-menu {
             position: absolute;
-            top: calc(100% + 15px);
+            top: calc(100% + 8px);
             right: 0;
             background: #ffffff;
-            border: 3px solid rgba(102, 126, 234, 0.3);
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            max-height: 450px;
-            min-width: 280px;
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            max-height: 280px;
+            min-width: 140px;
             overflow-y: auto;
             z-index: 10000;
             display: none;
           }
           .lang-menu.show {
             display: block;
-            animation: slideDown 0.3s ease;
-          }
-          @keyframes slideDown {
-            from {
-              opacity: 0;
-              transform: translateY(-10px);
-            }
-            to {
-              opacity: 1;
-              transform: translateY(0);
-            }
           }
           .lang-option {
-            padding: 18px 24px;
+            padding: 10px 14px;
             cursor: pointer;
-            transition: all 0.25s ease;
-            border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+            transition: all 0.2s ease;
+            border-bottom: 1px solid #f0f0f0;
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 8px;
             background: transparent;
             border-left: none;
             border-right: none;
             border-top: none;
             width: 100%;
             text-align: left;
-            font-size: 17px;
-            font-weight: 600;
+            font-size: 13px;
+            font-weight: 500;
           }
           .lang-option:last-child {
             border-bottom: none;
           }
           .lang-option:hover {
-            background: linear-gradient(90deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.12));
-            padding-left: 30px;
-            transform: translateX(5px);
+            background: #f5f7ff;
           }
           .lang-option.active {
-            background: linear-gradient(90deg, rgba(102, 126, 234, 0.25), rgba(118, 75, 162, 0.18));
-            font-weight: 800;
+            background: #e8ebff;
+            font-weight: 700;
             color: #667eea;
-            border-left: 5px solid #667eea;
           }
         </style>
     </head>
     <body class="bg-gray-50">
         <!-- Hero Section -->
         <div class="gradient-bg text-white">
-            <div class="container mx-auto px-4 py-6">
-                <div class="flex justify-between items-center mb-8">
-                    <h1 class="text-2xl md:text-3xl font-bold">
-                        <i class="fas fa-gem mr-2"></i>
+            <div class="container mx-auto px-4 py-3">
+                <div class="flex justify-between items-center mb-4">
+                    <h1 class="text-lg md:text-xl font-bold">
+                        <i class="fas fa-gem mr-1"></i>
                         Luxury Review Hub
                     </h1>
                     <div id="langSelector" class="relative z-50"></div>
                 </div>
 
-                <div class="text-center py-8 md:py-12 animate-fade-in">
-                    <h2 class="text-3xl md:text-5xl font-bold mb-4" id="hero-title"></h2>
-                    <p class="text-lg md:text-xl mb-2 opacity-90" id="hero-subtitle"></p>
-                    <p class="text-sm md:text-base opacity-80 mb-8" id="hero-description"></p>
+                <div class="text-center py-4 md:py-6 animate-fade-in">
+                    <h2 class="text-xl md:text-3xl font-bold mb-2" id="hero-title"></h2>
+                    <p class="text-sm md:text-base mb-1 opacity-90" id="hero-subtitle"></p>
+                    <p class="text-xs md:text-sm opacity-80 mb-4" id="hero-description"></p>
                     
                     <div class="max-w-2xl mx-auto">
                         <div class="flex gap-2">
-                            <input type="text" id="searchInput" class="flex-1 px-6 py-3 rounded-full text-gray-800 text-lg" />
-                            <button onclick="window.searchProducts()" class="bg-yellow-400 hover:bg-yellow-300 text-gray-800 font-bold px-8 py-3 rounded-full transition-all" id="search-btn"></button>
+                            <input type="text" id="searchInput" class="flex-1 px-4 py-2 rounded-full text-gray-800 text-sm" />
+                            <button onclick="window.searchProducts()" class="bg-yellow-400 hover:bg-yellow-300 text-gray-800 font-bold px-5 py-2 rounded-full transition-all text-sm" id="search-btn"></button>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 max-w-4xl mx-auto">
-                        <div class="glass rounded-xl p-4">
-                            <div class="text-3xl font-bold mb-1">200+</div>
-                            <div class="text-sm opacity-90" id="stat-stores"></div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mt-6 max-w-4xl mx-auto">
+                        <div class="glass rounded-lg p-3">
+                            <div class="text-xl font-bold mb-1">200+</div>
+                            <div class="text-xs opacity-90" id="stat-stores"></div>
                         </div>
-                        <div class="glass rounded-xl p-4">
-                            <div class="text-3xl font-bold mb-1">50,000+</div>
-                            <div class="text-sm opacity-90" id="stat-products"></div>
+                        <div class="glass rounded-lg p-3">
+                            <div class="text-xl font-bold mb-1">50,000+</div>
+                            <div class="text-xs opacity-90" id="stat-products"></div>
                         </div>
-                        <div class="glass rounded-xl p-4">
-                            <div class="text-3xl font-bold mb-1">10,000+</div>
-                            <div class="text-sm opacity-90" id="stat-reviews"></div>
+                        <div class="glass rounded-lg p-3">
+                            <div class="text-xl font-bold mb-1">10,000+</div>
+                            <div class="text-xs opacity-90" id="stat-reviews"></div>
                         </div>
-                        <div class="glass rounded-xl p-4">
-                            <div class="text-3xl font-bold mb-1">A~D</div>
-                            <div class="text-sm opacity-90" id="stat-trust"></div>
+                        <div class="glass rounded-lg p-3">
+                            <div class="text-xl font-bold mb-1">A~D</div>
+                            <div class="text-xs opacity-90" id="stat-trust"></div>
                         </div>
                     </div>
                 </div>
