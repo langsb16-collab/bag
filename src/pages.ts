@@ -238,26 +238,9 @@ export function getMainPageHTML() {
         </footer>
 
         <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
+        <script src="/static/i18n.js"></script>
         <script>
           console.log('=== 메인 스크립트 로드 시작 ===');
-          
-          // i18n.js 로드 대기 함수
-          function waitForI18n(callback, maxAttempts = 50) {
-            let attempts = 0;
-            const checkInterval = setInterval(function() {
-              attempts++;
-              console.log('i18n 로드 확인 시도:', attempts);
-              
-              if (typeof t === 'function' && typeof getLangSelectorHTML === 'function' && typeof initLangSelector === 'function') {
-                console.log('✅ i18n.js 완전히 로드됨');
-                clearInterval(checkInterval);
-                callback();
-              } else if (attempts >= maxAttempts) {
-                console.error('❌ i18n.js 로드 실패 (타임아웃)');
-                clearInterval(checkInterval);
-              }
-            }, 100);
-          }
           
           // 다국어 텍스트 적용
           function applyTranslations() {
@@ -498,37 +481,39 @@ export function getMainPageHTML() {
           document.addEventListener('DOMContentLoaded', function() {
             console.log('=== DOM 로드 완료 ===');
             
-            // i18n.js 로드 대기
-            waitForI18n(function() {
-              console.log('=== i18n 로드 완료, 초기화 시작 ===');
-              
-              try {
-                // 다국어 적용
-                applyTranslations();
-                
-                // 데이터 로드
-                loadPopularBrands();
-                loadBestDeals();
-                
-                // 엔터키로 검색
-                const searchInput = document.getElementById('searchInput');
-                if (searchInput) {
-                  searchInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                      searchProducts();
-                    }
-                  });
-                  console.log('검색 입력란 이벤트 등록 완료');
-                }
-                
-                console.log('=== 앱 초기화 완료 ===');
-              } catch (error) {
-                console.error('초기화 오류:', error);
+            try {
+              // 번역 함수 확인
+              if (typeof t !== 'function') {
+                console.error('❌ 번역 함수가 로드되지 않았습니다');
+                return;
               }
-            });
+              
+              console.log('✅ 번역 함수 사용 가능');
+              
+              // 다국어 적용
+              applyTranslations();
+              
+              // 데이터 로드
+              loadPopularBrands();
+              loadBestDeals();
+              
+              // 엔터키로 검색
+              const searchInput = document.getElementById('searchInput');
+              if (searchInput) {
+                searchInput.addEventListener('keypress', function(e) {
+                  if (e.key === 'Enter') {
+                    searchProducts();
+                  }
+                });
+                console.log('검색 입력란 이벤트 등록 완료');
+              }
+              
+              console.log('=== 앱 초기화 완료 ===');
+            } catch (error) {
+              console.error('초기화 오류:', error);
+            }
           });
         </script>
-        <script src="/static/i18n.js"></script>
     </body>
     </html>
   `;
