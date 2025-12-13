@@ -608,12 +608,18 @@ function t(key) {
   return translations[currentLang][key] || translations['ko'][key] || key;
 }
 
-// 언어 변경 함수
+// 언어 변경 함수 (전역 스코프에 명시적으로 노출)
 function changeLang(lang) {
+  console.log('언어 변경:', lang);
   currentLang = lang;
   localStorage.setItem('lang', lang);
-  location.reload();
+  
+  // 즉시 새로고침
+  window.location.reload();
 }
+
+// 전역 스코프에 명시적으로 등록
+window.changeLang = changeLang;
 
 // 언어 선택기 HTML
 function getLangSelectorHTML() {
@@ -660,22 +666,28 @@ function initLangSelector() {
   const langMenu = document.getElementById('langMenu');
   
   if (!langBtn) {
-    console.error('언어 버튼을 찾을 수 없습니다');
-    return;
+    console.error('❌ 언어 버튼을 찾을 수 없습니다');
+    return false;
   }
   
   if (!langMenu) {
-    console.error('언어 메뉴를 찾을 수 없습니다');
-    return;
+    console.error('❌ 언어 메뉴를 찾을 수 없습니다');
+    return false;
   }
   
-  console.log('언어 버튼:', langBtn);
-  console.log('언어 메뉴:', langMenu);
+  console.log('✅ 언어 버튼 발견:', langBtn);
+  console.log('✅ 언어 메뉴 발견:', langMenu);
   
-  // 버튼 클릭 이벤트
-  langBtn.addEventListener('click', function(e) {
+  // 이전 이벤트 리스너 제거 (중복 방지)
+  const newLangBtn = langBtn.cloneNode(true);
+  langBtn.parentNode.replaceChild(newLangBtn, langBtn);
+  
+  // 새 버튼에 클릭 이벤트 등록
+  newLangBtn.addEventListener('click', function(e) {
     e.preventDefault();
     e.stopPropagation();
+    
+    console.log('🖱️ 언어 버튼 클릭됨');
     
     const isShowing = langMenu.classList.contains('show');
     if (isShowing) {
@@ -689,17 +701,22 @@ function initLangSelector() {
   
   // 메뉴 외부 클릭 시 닫기
   document.addEventListener('click', function(e) {
-    if (!langBtn.contains(e.target) && !langMenu.contains(e.target)) {
-      langMenu.classList.remove('show');
+    if (!newLangBtn.contains(e.target) && !langMenu.contains(e.target)) {
+      if (langMenu.classList.contains('show')) {
+        langMenu.classList.remove('show');
+        console.log('메뉴 외부 클릭으로 닫힘');
+      }
     }
   });
   
   // ESC 키로 닫기
   document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
+    if (e.key === 'Escape' && langMenu.classList.contains('show')) {
       langMenu.classList.remove('show');
+      console.log('ESC 키로 메뉴 닫힘');
     }
   });
   
   console.log('=== 언어 선택기 초기화 완료 ===');
+  return true;
 }
