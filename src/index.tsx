@@ -232,6 +232,48 @@ app.get('/api/search', async (c) => {
   })
 })
 
+// 15. 이미지 검색 API
+app.post('/api/image-search', async (c) => {
+  try {
+    const formData = await c.req.formData()
+    const imageFile = formData.get('image')
+    
+    if (!imageFile || !(imageFile instanceof File)) {
+      return c.json({ success: false, message: '이미지 파일이 필요합니다' }, 400)
+    }
+
+    // 이미지를 Base64로 변환
+    const arrayBuffer = await imageFile.arrayBuffer()
+    const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)))
+    
+    // TODO: 실제 이미지 인식 API 연동 (Google Vision API, AWS Rekognition 등)
+    // 현재는 데모 응답 반환
+    const { DB } = c.env
+    
+    // 임시: 랜덤 제품 반환 (실제로는 이미지 분석 결과로 검색)
+    const { results: products } = await DB.prepare(`
+      SELECT p.*, b.name as brand_name
+      FROM products p
+      LEFT JOIN brands b ON p.brand_id = b.id
+      ORDER BY RANDOM()
+      LIMIT 10
+    `).all()
+    
+    return c.json({
+      success: true,
+      message: '이미지 검색 기능은 곧 제공될 예정입니다',
+      data: {
+        detected: '명품 가방',
+        confidence: 0.85,
+        products
+      }
+    })
+  } catch (error) {
+    console.error('이미지 검색 오류:', error)
+    return c.json({ success: false, message: '이미지 처리 중 오류가 발생했습니다' }, 500)
+  }
+})
+
 // 13. 인기 브랜드 TOP 10
 app.get('/api/brands/top/popular', async (c) => {
   const { DB } = c.env

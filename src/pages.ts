@@ -146,7 +146,20 @@ export function getMainPageHTML() {
                     <div class="max-w-2xl mx-auto">
                         <div class="flex gap-2">
                             <input type="text" id="searchInput" class="flex-1 px-4 py-2 rounded-full bg-white text-body text-sm border border-accent focus:outline-none focus:ring-2 focus:ring-accent" />
+                            <input type="file" id="imageInput" accept="image/*" capture="environment" class="hidden" />
+                            <button onclick="window.triggerImageUpload()" class="bg-white hover:bg-gray-100 text-accent font-bold px-4 py-2 rounded-full transition-all text-sm border border-accent" title="이미지로 검색">
+                                <i class="fas fa-camera"></i>
+                            </button>
                             <button onclick="window.searchProducts()" class="bg-accent hover:opacity-90 text-white font-bold px-5 py-2 rounded-full transition-all text-sm" id="search-btn"></button>
+                        </div>
+                        <div id="imagePreview" class="mt-4 hidden">
+                            <div class="relative inline-block">
+                                <img id="previewImage" class="max-w-xs rounded-lg border-2 border-accent" />
+                                <button onclick="window.clearImageSearch()" class="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600">
+                                    <i class="fas fa-times text-xs"></i>
+                                </button>
+                            </div>
+                            <p class="text-xs luxury-subtitle mt-2" id="imageSearchStatus"></p>
                         </div>
                     </div>
 
@@ -254,7 +267,45 @@ export function getMainPageHTML() {
         <script src="/static/i18n.js?t=${timestamp}"></script>
         <script>
           // 전역 함수 선언
+          let currentImageFile = null;
+
+          window.triggerImageUpload = function() {
+            const imageInput = document.getElementById('imageInput');
+            if (imageInput) {
+              imageInput.click();
+            }
+          };
+
+          window.clearImageSearch = function() {
+            currentImageFile = null;
+            const imagePreview = document.getElementById('imagePreview');
+            const imageInput = document.getElementById('imageInput');
+            if (imagePreview) imagePreview.classList.add('hidden');
+            if (imageInput) imageInput.value = '';
+          };
+
           window.searchProducts = async function() {
+            // 이미지 검색
+            if (currentImageFile) {
+              const statusEl = document.getElementById('imageSearchStatus');
+              if (statusEl) statusEl.textContent = '이미지 검색 중...';
+              
+              try {
+                const formData = new FormData();
+                formData.append('image', currentImageFile);
+                const response = await axios.post('/api/image-search', formData, {
+                  headers: { 'Content-Type': 'multipart/form-data' }
+                });
+                console.log('이미지 검색 결과:', response.data);
+                if (statusEl) statusEl.textContent = '검색 완료!';
+              } catch (error) {
+                console.error('이미지 검색 오류:', error);
+                if (statusEl) statusEl.textContent = '검색 실패. 다시 시도해주세요.';
+              }
+              return;
+            }
+
+            // 텍스트 검색
             const input = document.getElementById('searchInput');
             const keyword = input ? input.value.trim() : '';
             if (!keyword) {
@@ -331,6 +382,29 @@ export function getMainPageHTML() {
               if (window.initLangSelector) {
                 window.initLangSelector();
               }
+            }
+
+            // 이미지 업로드 이벤트
+            const imageInput = document.getElementById('imageInput');
+            if (imageInput) {
+              imageInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file && file.type.startsWith('image/')) {
+                  currentImageFile = file;
+                  const reader = new FileReader();
+                  reader.onload = function(event) {
+                    const previewImage = document.getElementById('previewImage');
+                    const imagePreview = document.getElementById('imagePreview');
+                    const statusEl = document.getElementById('imageSearchStatus');
+                    if (previewImage && imagePreview) {
+                      previewImage.src = event.target.result;
+                      imagePreview.classList.remove('hidden');
+                      if (statusEl) statusEl.textContent = '이미지가 선택되었습니다. 검색 버튼을 클릭하세요.';
+                    }
+                  };
+                  reader.readAsDataURL(file);
+                }
+              });
             }
             
             // 데이터 로드
