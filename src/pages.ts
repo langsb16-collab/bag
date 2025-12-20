@@ -12,10 +12,37 @@ export function getMainPageHTML() {
         <title>Luxury Review Hub - Global Luxury Price Comparison</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Libre+Baskerville:wght@400;700&family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
         <style>
           * { margin: 0; padding: 0; box-sizing: border-box; }
-          body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
-          .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+          body { 
+            font-family: 'Inter', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #3A3A3C;
+          }
+          .gradient-bg { 
+            background: #111111;
+          }
+          .luxury-title {
+            font-family: 'Playfair Display', 'Noto Sans KR', serif;
+            color: #FFFFFF;
+          }
+          .luxury-subtitle {
+            font-family: 'Inter', 'Noto Sans KR', sans-serif;
+            color: #B3B3B3;
+          }
+          .section-title {
+            font-family: 'Libre Baskerville', 'Noto Sans KR', serif;
+            color: #1C1C1E;
+          }
+          .text-primary { color: #1C1C1E; }
+          .text-body { color: #3A3A3C; }
+          .text-secondary { color: #6E6E73; }
+          .text-link { color: #0B1C2D; }
+          .text-accent { color: #C9A24D; }
+          .bg-luxury-dark { background: #111111; }
+          .border-accent { border-color: #C9A24D; }
           .glass { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); }
           .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
           .transition-all { transition: all 0.3s ease; }
@@ -29,13 +56,13 @@ export function getMainPageHTML() {
             z-index: 9999;
           }
           .lang-btn {
-            background: #667eea;
-            border: 1px solid #ffffff;
+            background: rgba(201, 162, 77, 0.1);
+            border: 1px solid #C9A24D;
             padding: 4px 8px;
             border-radius: 8px;
             font-weight: 600;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(201, 162, 77, 0.2);
+            color: #C9A24D;
             font-size: 11px;
             cursor: pointer;
             display: flex;
@@ -43,19 +70,20 @@ export function getMainPageHTML() {
             gap: 4px;
             transition: all 0.2s ease;
             min-width: 70px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'Inter', 'Noto Sans KR', sans-serif;
           }
           .lang-btn:hover {
-            background: #7c8ef5;
+            background: rgba(201, 162, 77, 0.2);
+            border-color: #D4B366;
           }
           .lang-menu {
             position: absolute;
             top: calc(100% + 5px);
             right: 0;
-            background: #ffffff;
-            border: 1px solid #667eea;
+            background: #1C1C1E;
+            border: 1px solid #C9A24D;
             border-radius: 8px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
             max-height: 200px;
             min-width: 100px;
             overflow-y: auto;
@@ -69,7 +97,7 @@ export function getMainPageHTML() {
             padding: 6px 10px;
             cursor: pointer;
             transition: all 0.15s ease;
-            border-bottom: 1px solid #f5f5f5;
+            border-bottom: 1px solid #2A2A2C;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -81,63 +109,63 @@ export function getMainPageHTML() {
             text-align: left;
             font-size: 11px;
             font-weight: 500;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            color: #1a202c;
+            font-family: 'Inter', 'Noto Sans KR', sans-serif;
+            color: #B3B3B3;
           }
           .lang-option:last-child {
             border-bottom: none;
           }
           .lang-option:hover {
-            background: #f5f7ff;
-            color: #667eea;
+            background: rgba(201, 162, 77, 0.1);
+            color: #C9A24D;
           }
           .lang-option.active {
-            background: #e8ebff;
+            background: rgba(201, 162, 77, 0.15);
             font-weight: 600;
-            color: #667eea;
+            color: #C9A24D;
           }
         </style>
     </head>
-    <body class="bg-gray-50">
+    <body class="bg-white">
         <!-- Hero Section -->
-        <div class="gradient-bg text-white">
+        <div class="bg-luxury-dark text-white">
             <div class="container mx-auto px-4 py-3">
                 <div class="flex justify-between items-center mb-4">
-                    <h1 class="text-lg md:text-xl font-bold">
-                        <i class="fas fa-gem mr-1"></i>
+                    <h1 class="text-lg md:text-xl font-bold luxury-title">
+                        <i class="fas fa-gem mr-1 text-accent"></i>
                         Luxury Review Hub
                     </h1>
                     <div id="langSelector" class="relative z-50"></div>
                 </div>
 
                 <div class="text-center py-4 md:py-6 animate-fade-in">
-                    <h2 class="text-xl md:text-3xl font-bold mb-2" id="hero-title"></h2>
-                    <p class="text-sm md:text-base mb-1 opacity-90" id="hero-subtitle"></p>
-                    <p class="text-xs md:text-sm opacity-80 mb-4" id="hero-description"></p>
+                    <h2 class="text-xl md:text-3xl font-bold mb-2 luxury-title" id="hero-title"></h2>
+                    <p class="text-sm md:text-base mb-1 luxury-subtitle" id="hero-subtitle"></p>
+                    <p class="text-xs md:text-sm luxury-subtitle mb-4" id="hero-description"></p>
                     
                     <div class="max-w-2xl mx-auto">
                         <div class="flex gap-2">
-                            <input type="text" id="searchInput" class="flex-1 px-4 py-2 rounded-full text-gray-800 text-sm" />
-                            <button onclick="window.searchProducts()" class="bg-yellow-400 hover:bg-yellow-300 text-gray-800 font-bold px-5 py-2 rounded-full transition-all text-sm" id="search-btn"></button>
+                            <input type="text" id="searchInput" class="flex-1 px-4 py-2 rounded-full bg-white text-body text-sm border border-accent focus:outline-none focus:ring-2 focus:ring-accent" />
+                            <button onclick="window.searchProducts()" class="bg-accent hover:opacity-90 text-white font-bold px-5 py-2 rounded-full transition-all text-sm" id="search-btn"></button>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mt-6 max-w-4xl mx-auto">
-                        <div class="glass rounded-lg p-3">
-                            <div class="text-xl font-bold mb-1">200+</div>
-                            <div class="text-xs opacity-90" id="stat-stores"></div>
+                        <div class="glass rounded-lg p-3 border border-accent">
+                            <div class="text-xl font-bold mb-1 text-accent">200+</div>
+                            <div class="text-xs luxury-subtitle" id="stat-stores"></div>
                         </div>
-                        <div class="glass rounded-lg p-3">
-                            <div class="text-xl font-bold mb-1">50,000+</div>
-                            <div class="text-xs opacity-90" id="stat-products"></div>
+                        <div class="glass rounded-lg p-3 border border-accent">
+                            <div class="text-xl font-bold mb-1 text-accent">50,000+</div>
+                            <div class="text-xs luxury-subtitle" id="stat-products"></div>
                         </div>
-                        <div class="glass rounded-lg p-3">
-                            <div class="text-xl font-bold mb-1">10,000+</div>
-                            <div class="text-xs opacity-90" id="stat-reviews"></div>
+                        <div class="glass rounded-lg p-3 border border-accent">
+                            <div class="text-xl font-bold mb-1 text-accent">10,000+</div>
+                            <div class="text-xs luxury-subtitle" id="stat-reviews"></div>
                         </div>
-                        <div class="glass rounded-lg p-3">
-                            <div class="text-xl font-bold mb-1">A~D</div>
-                            <div class="text-xs opacity-90" id="stat-trust"></div>
+                        <div class="glass rounded-lg p-3 border border-accent">
+                            <div class="text-xl font-bold mb-1 text-accent">A~D</div>
+                            <div class="text-xs luxury-subtitle" id="stat-trust"></div>
                         </div>
                     </div>
                 </div>
@@ -146,55 +174,55 @@ export function getMainPageHTML() {
 
         <!-- Features Section -->
         <div class="container mx-auto px-4 py-8">
-            <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">
-                <i class="fas fa-star text-yellow-500 mr-1"></i>
+            <h2 class="text-2xl font-bold text-center mb-6 section-title">
+                <i class="fas fa-star text-accent mr-1"></i>
                 <span id="features-title"></span>
             </h2>
             
             <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <div class="bg-white rounded-xl p-4 shadow-md card-hover transition-all">
+                <div class="bg-white rounded-xl p-4 shadow-md card-hover transition-all border border-gray-200">
                     <div class="text-3xl mb-2">💰</div>
-                    <h3 class="font-bold mb-1" id="feature-price-title"></h3>
-                    <p class="text-xs text-gray-600" id="feature-price-desc"></p>
+                    <h3 class="font-bold mb-1 text-primary" id="feature-price-title"></h3>
+                    <p class="text-xs text-secondary" id="feature-price-desc"></p>
                 </div>
                 
-                <div class="bg-white rounded-xl p-4 shadow-md card-hover transition-all">
+                <div class="bg-white rounded-xl p-4 shadow-md card-hover transition-all border border-gray-200">
                     <div class="text-3xl mb-2">✅</div>
-                    <h3 class="font-bold mb-1" id="feature-seller-title"></h3>
-                    <p class="text-xs text-gray-600" id="feature-seller-desc"></p>
+                    <h3 class="font-bold mb-1 text-primary" id="feature-seller-title"></h3>
+                    <p class="text-xs text-secondary" id="feature-seller-desc"></p>
                 </div>
                 
-                <div class="bg-white rounded-xl p-4 shadow-md card-hover transition-all">
+                <div class="bg-white rounded-xl p-4 shadow-md card-hover transition-all border border-gray-200">
                     <div class="text-3xl mb-2">📝</div>
-                    <h3 class="font-bold mb-1" id="feature-review-title"></h3>
-                    <p class="text-xs text-gray-600" id="feature-review-desc"></p>
+                    <h3 class="font-bold mb-1 text-primary" id="feature-review-title"></h3>
+                    <p class="text-xs text-secondary" id="feature-review-desc"></p>
                 </div>
                 
-                <div class="bg-white rounded-xl p-4 shadow-md card-hover transition-all">
+                <div class="bg-white rounded-xl p-4 shadow-md card-hover transition-all border border-gray-200">
                     <div class="text-3xl mb-2">🔍</div>
-                    <h3 class="font-bold mb-1" id="feature-auth-title"></h3>
-                    <p class="text-xs text-gray-600" id="feature-auth-desc"></p>
+                    <h3 class="font-bold mb-1 text-primary" id="feature-auth-title"></h3>
+                    <p class="text-xs text-secondary" id="feature-auth-desc"></p>
                 </div>
                 
-                <div class="bg-white rounded-xl p-4 shadow-md card-hover transition-all">
+                <div class="bg-white rounded-xl p-4 shadow-md card-hover transition-all border border-gray-200">
                     <div class="text-3xl mb-2">📊</div>
-                    <h3 class="font-bold mb-1" id="feature-trend-title"></h3>
-                    <p class="text-xs text-gray-600" id="feature-trend-desc"></p>
+                    <h3 class="font-bold mb-1 text-primary" id="feature-trend-title"></h3>
+                    <p class="text-xs text-secondary" id="feature-trend-desc"></p>
                 </div>
                 
-                <div class="bg-white rounded-xl p-4 shadow-md card-hover transition-all">
+                <div class="bg-white rounded-xl p-4 shadow-md card-hover transition-all border border-gray-200">
                     <div class="text-3xl mb-2">🌍</div>
-                    <h3 class="font-bold mb-1" id="feature-global-title"></h3>
-                    <p class="text-xs text-gray-600" id="feature-global-desc"></p>
+                    <h3 class="font-bold mb-1 text-primary" id="feature-global-title"></h3>
+                    <p class="text-xs text-secondary" id="feature-global-desc"></p>
                 </div>
             </div>
         </div>
 
         <!-- Popular Brands -->
-        <div class="bg-white py-8">
+        <div class="bg-gray-50 py-8">
             <div class="container mx-auto px-4">
-                <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">
-                    <i class="fas fa-crown text-yellow-500 mr-1"></i>
+                <h2 class="text-2xl font-bold text-center mb-6 section-title">
+                    <i class="fas fa-crown text-accent mr-1"></i>
                     <span id="popular-brands-title"></span>
                 </h2>
                 <div id="popularBrands" class="grid grid-cols-2 md:grid-cols-5 gap-3">
@@ -205,8 +233,8 @@ export function getMainPageHTML() {
 
         <!-- Best Deals -->
         <div class="container mx-auto px-4 py-8">
-            <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">
-                <i class="fas fa-fire text-red-500 mr-1"></i>
+            <h2 class="text-2xl font-bold text-center mb-6 section-title">
+                <i class="fas fa-fire text-accent mr-1"></i>
                 <span id="best-deals-title"></span>
             </h2>
             <div id="bestDeals" class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -215,10 +243,10 @@ export function getMainPageHTML() {
         </div>
 
         <!-- Footer -->
-        <footer class="gradient-bg text-white py-12 mt-16">
+        <footer class="bg-luxury-dark text-white py-12 mt-16">
             <div class="container mx-auto px-4 text-center">
-                <p class="text-lg mb-4" id="footer-copyright"></p>
-                <p class="opacity-80" id="footer-tagline"></p>
+                <p class="text-lg mb-4 luxury-title" id="footer-copyright"></p>
+                <p class="luxury-subtitle" id="footer-tagline"></p>
             </div>
         </footer>
 
